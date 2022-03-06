@@ -25,7 +25,7 @@ def summoner():
     region = request.form.get['Region']
 
 
-# golbal variables
+# global variables
 api_key = ''
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
