@@ -5,7 +5,7 @@ Created on Mon Feb 21 10:57:41 2022
 """
 from riotwatcher import LolWatcher, ApiError
 from IPython.display import display
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 import pandas as pd
@@ -14,15 +14,54 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
 db = SQLAlchemy(app)
 
+class Summoner(db.Model):
+    name = db.Column(db.String, primary_key=True)
+    profileIconId = db.Column(db.Integer, primary_key=True)
+    
+    def __repr__(self):
+        return '<Summoner %r>' % self.id
 
-@app.route('/summoner')
+@app.route('/', methods=['POST', 'GET'])
 def Main():
+<<<<<<< HEAD
     return render_template('Main.html')
 
 @app.route('summoner', methods=['POST'])
 def summoner():
     user = request.form.get["Username"]
     region = request.form.get['Region']
+=======
+    if request.method == 'POST':
+        sumname = request.form['content']
+        profile = Summoner(name=sumname)
+        region = 'NA1'
+        summonerdict = watcher.summoner.by_name(region, sumname)
+        #demodf = []
+        subsets_needed = ['name', 'profileIconId', 'summonerLevel']
+        demodict = {key: summonerdict[key] for key in subsets_needed}
+
+        
+        
+        try:
+            return demodict
+            return redirect('/')
+        except:
+            return "there was an issue searching for this summoner"
+    else:
+        return render_template('index.html')
+
+@app.route('/summoner/<string:name>', methods=['GET', 'POST'])
+def summoner(name):
+    
+    #user1 = request.form.get['Username']
+    #region1 = request.form.get['region']
+    """
+    summonerdf = watcher.summoner.by_name(region, name)
+    summonerdf['profileIconId']
+    summonerdf['summonerLevel']
+    """
+    return "hello"
+>>>>>>> fad1dc851fe2e3f7fc522b745afd6b3bda24181c
 
 
 # global variables
@@ -30,10 +69,10 @@ api_key = ''
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
-region = region.upper()
+#region = region.upper()
 #match_region = 'NA'
 
-
+"""
 if region == 'NA':
     region = 'NA1';
 elif region == 'BR':
@@ -83,6 +122,10 @@ else:
 
 me = watcher.summoner.by_name(region, name)
 
+print(me['summonerLevel'])
+print(me['profileIconId'])
+
+
 my_matches = watcher.match.matchlist_by_puuid(match_region, me['puuid'],start=0,count=20)
 #print(my_matches)
 
@@ -116,7 +159,7 @@ for row in match_detail['info']['participants']:
 df = pd.DataFrame(participants)
 output_csv = "Last_Match.csv"
 df.to_csv(output_csv)
-
+"""
  
 #print(df)
 if __name__ == "__main__":
