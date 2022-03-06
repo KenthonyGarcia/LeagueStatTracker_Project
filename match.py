@@ -23,14 +23,6 @@ class Summoner(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def Main():
-<<<<<<< HEAD
-    return render_template('Main.html')
-
-@app.route('summoner', methods=['POST'])
-def summoner():
-    user = request.form.get["Username"]
-    region = request.form.get['Region']
-=======
     if request.method == 'POST':
         sumname = request.form['content']
         profile = Summoner(name=sumname)
@@ -61,7 +53,6 @@ def summoner(name):
     summonerdf['summonerLevel']
     """
     return "hello"
->>>>>>> fad1dc851fe2e3f7fc522b745afd6b3bda24181c
 
 
 # global variables
