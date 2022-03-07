@@ -1,0 +1,30 @@
+.TitleName{
+    color: #8e7b78;
+    font-size:60;
+    text-align: center
+}
+
+.LeagueLogo{
+    width: 500px; 
+    padding: 20px;  
+    margin-left: auto;
+    margin-right: 400px;
+}
+
+.bg{
+    background-color: black;
+}
+
+.buttonSearch {
+    background-color: gray;
+    border-color: #318CA5;
+    border-width: 5px;
+    border-radius: 15px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+  }
