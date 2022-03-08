@@ -23,10 +23,10 @@ class Summoner(db.Model):
         return '<Summoner %r>' % self.id
 """
 #----dropdown for regions
-@app.route('/', methods = ['GET'])
-def dropdown():
-    regions = ['NA1', 'EUW1', 'EUN1', 'BR1', 'LA1', 'LA2', 'OCE', 'RU1', 'TR1', 'JP1', 'KR'] #region codes
-    return render_template('index.html', regions = regions) #regions is the dropdown menu variable name
+#@app.route('/', methods = ['GET'])
+#def dropdown():
+#    regions = ['NA1', 'EUW1', 'EUN1', 'BR1', 'LA1', 'LA2', 'OCE', 'RU1', 'TR1', 'JP1', 'KR'] #region codes
+#    return render_template('index.html', regions = regions) #regions is the dropdown menu variable name
 #----
 
 @app.route('/', methods=['POST', 'GET']) #main page that will be loaded first.
