@@ -14,31 +14,29 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
 db = SQLAlchemy(app)
 
+"""
 class Summoner(db.Model):
     name = db.Column(db.String, primary_key=True)
     profileIconId = db.Column(db.Integer, primary_key=True)
     
     def __repr__(self):
         return '<Summoner %r>' % self.id
-
-@app.route('/', methods=['POST', 'GET'])
+"""
+@app.route('/', methods=['POST', 'GET']) #main page that will be loaded first.
 def Main():
     if request.method == 'POST':
-        sumname = request.form['content']
-        profile = Summoner(name=sumname)
-        region = 'NA1'
-        summonerdict = watcher.summoner.by_name(region, sumname)
-        #demodf = []
-        subsets_needed = ['name', 'profileIconId', 'summonerLevel']
-        demodict = {key: summonerdict[key] for key in subsets_needed}
-
-        
+        sumname = request.form['content'] #gets summoner name from inputed text.
+        #profile = Summoner(name=sumname)
+        region = 'NA1' #for now we will focus on the North American server.
         
         try:
-            return demodict
-            return redirect('/')
+            summonerdict = watcher.summoner.by_name(region, sumname) #pulls summoner data from riot api into a dictionary
+            #demodf = []
+            subsets_needed = ['name', 'profileIconId', 'summonerLevel'] #for now all we need is name, profileIconId, and summonerLevel.
+            demodict = {key: summonerdict[key] for key in subsets_needed} #separates the keys we need form the dictionary
+            return demodict #outputs the dictionary with the 3 keys.
         except:
-            return "there was an issue searching for this summoner"
+            return "there was an issue searching for this summoner or this summoner does not exist."  #incase the summoner name being searched for does not exist.
     else:
         return render_template('index.html')
 
@@ -56,7 +54,7 @@ def summoner(name):
 
 
 # global variables
-api_key = ''
+api_key = 'RGAPI-798d6122-16c1-436d-8d48-3dac6771d89c'
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
