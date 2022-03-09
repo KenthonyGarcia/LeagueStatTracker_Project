@@ -41,6 +41,8 @@ def Main():
             #demodf = []
             subsets_needed = ['name', 'profileIconId', 'summonerLevel'] #for now all we need is name, profileIconId, and summonerLevel.
             demodict = {key: summonerdict[key] for key in subsets_needed} #separates the keys we need form the dictionary
+            imgid = demodf['profileIconId']
+            profile_icon_id = str(imgid) +'.png'
             return demodict #outputs the dictionary with the 3 keys.
         except:
             return "there was an issue searching for this summoner or this summoner does not exist."  #incase the summoner name being searched for does not exist.

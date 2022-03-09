@@ -9,9 +9,9 @@
     <div class="content">   
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
         <h1 class = "TitleName">LeagueStatTracker*(subject to change)</h1>
-        <a href="/summoner/{{name}}">Search</a>
+        <a href="/summoner/{{sumname}}">Search</a>
         <div class="form">
-            <form action="/" method="POST">
+            <form action="/" method="POST" autocomplete="off">
                 <input type="text" name="content" id="content">
                 <input class = buttonSearch type="submit" value="FIND PLAYER">
             </form>
