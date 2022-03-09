@@ -63,7 +63,7 @@ def summoner(name):
 
 
 # global variables
-api_key = 'RGAPI-2c65d619-bf03-44ff-a563-aee823eaf8d7'
+api_key = ''
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
