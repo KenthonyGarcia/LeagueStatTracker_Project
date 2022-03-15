@@ -38,10 +38,13 @@ def Main():
         
         try:
             summonerdict = watcher.summoner.by_name(region, sumname) #pulls summoner data from riot api into a dictionary
-            #demodf = []
             subsets_needed = ['name', 'profileIconId', 'summonerLevel'] #for now all we need is name, profileIconId, and summonerLevel.
             demodict = {key: summonerdict[key] for key in subsets_needed} #separates the keys we need form the dictionary
+            nameid = demodict['name']
             imgid = demodict['profileIconId']
+            Levelid = demodict['summonerLevel']
+            name = str(nameid)
+            sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
             return demodict #outputs the dictionary with the 3 keys.
         except:
@@ -63,7 +66,7 @@ def summoner(name):
 
 
 # global variables
-api_key = ''
+api_key = 'RGAPI-64ed5a24-a7c9-4a96-a032-66e9d2a586fb'
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
