@@ -9,10 +9,14 @@ from flask import Flask, request, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 import pandas as pd
+import os
+
+PROFILEICON_FOLDER = os.path.join('static', 'img', 'profileicon')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
 db = SQLAlchemy(app)
+app.config['UPLOAD_FOLDER'] = PROFILEICON_FOLDER
 
 """
 class Summoner(db.Model):
@@ -46,11 +50,14 @@ def Main():
             name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
-            return demodict #outputs the dictionary with the 3 keys.
+            profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
+            #return demodict
+            return render_template('index.html', profile_img = profileicon_file_path) #pass profile_img as variable for
+            #note: change index.html(search page) to summoner.html(result page)
         except:
             return "there was an issue searching for this summoner or this summoner does not exist."  #incase the summoner name being searched for does not exist.
     else:
-        return render_template('index.html')
+        return render_template('index.html') #pass profile_img as variable for
 
 @app.route('/summoner/<string:name>', methods=['GET', 'POST'])
 def summoner(name):
@@ -66,7 +73,7 @@ def summoner(name):
 
 
 # global variables
-api_key = 'RGAPI-64ed5a24-a7c9-4a96-a032-66e9d2a586fb'
+api_key = 'RGAPI-a8d687c5-a009-4008-97bd-82ca0305cee3'
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
