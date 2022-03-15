@@ -52,7 +52,7 @@ def Main():
             profile_icon_id = str(imgid) +'.png'
             profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
             #return demodict
-            return render_template('index.html', profile_img = profileicon_file_path) #pass profile_img as variable for
+            return render_template('summoner.html', profile_img = profileicon_file_path, name = name, level = sumonnerLevel) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return "there was an issue searching for this summoner or this summoner does not exist."  #incase the summoner name being searched for does not exist.
@@ -73,7 +73,8 @@ def summoner(name):
 
 
 # global variables
-api_key = 'RGAPI-a8d687c5-a009-4008-97bd-82ca0305cee3'
+api_key = 'RGAPI-ef30d9e4-211a-4db0-89d3-d9df24285594'
+
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
