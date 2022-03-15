@@ -57,7 +57,7 @@ def Main():
         except:
             return "there was an issue searching for this summoner or this summoner does not exist."  #incase the summoner name being searched for does not exist.
     else:
-        return render_template('index.html') #pass profile_img as variable for
+        return render_template('index.html') 
 
 @app.route('/summoner/<string:name>', methods=['GET', 'POST'])
 def summoner(name):
