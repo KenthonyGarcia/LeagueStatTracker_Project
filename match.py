@@ -12,6 +12,7 @@ import pandas as pd
 import os
 
 PROFILEICON_FOLDER = os.path.join('static', 'img', 'profileicon')
+ITEM_FOLDER = os.path.join('static', 'img', 'item')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
@@ -39,7 +40,29 @@ def Main():
         sumname = request.form['content'] #gets summoner name from inputed text.
         #profile = Summoner(name=sumname)
         region = 'NA1' #for now we will focus on the North American server.
-        
+      
+        if region == 'NA1':
+            match_region = 'AMERICAS';
+        elif region == 'BR1':
+            match_region = 'AMERICAS';
+        elif region == 'LA1':
+            match_region = 'AMERICAS';
+        elif region == 'LA2':
+            match_region = 'AMERICAS';
+        elif region == 'OC1':
+            match_region = 'AMERICAS';
+        elif region == 'KR':
+            match_region = 'ASIA';
+        elif region == 'JP1':
+            match_region = 'ASIA';
+        elif region == 'EUN1':
+            match_region = 'EUROPE';
+        elif region == 'EUW1':
+            match_region = 'EUROPE';
+        elif region == 'RU':
+            match_region = 'EUROPE';
+        else:
+            match_region = 'EUROPE';
         try:
             summonerdict = watcher.summoner.by_name(region, sumname) #pulls summoner data from riot api into a dictionary
             subsets_needed = ['name', 'profileIconId', 'summonerLevel'] #for now all we need is name, profileIconId, and summonerLevel.
@@ -47,12 +70,46 @@ def Main():
             nameid = demodict['name']
             imgid = demodict['profileIconId']
             Levelid = demodict['summonerLevel']
+            
+            summoner_matches = watcher.match.matchlist_by_puuid(match_region, summonerdict['puuid'],start=0,count=20)#Brings up the 20 most recent matches.
+            last_match = summoner_matches[0]#selects the last match on the account
+            match_detail = watcher.match.by_id(match_region, last_match)
+           
+            participants = []
+            for row in match_detail['info']['participants']:
+                participants_row = {}
+                participants_row['summonerName'] = row['summonerName']
+                participants_row['individualPosition'] = row['individualPosition']
+                participants_row['championName'] = row['championName']
+                participants_row['champLevel'] = row['champLevel']
+                participants_row['kills'] = row['kills']
+                participants_row['deaths'] = row['deaths']
+                participants_row['assists'] = row['assists']
+                participants_row['visionScore'] = row['visionScore']
+                participants_row['goldEarned'] = row['goldEarned']
+                participants_row['totalMinionsKilled'] = row['totalMinionsKilled']
+                participants_row['item0'] = row['item0']
+                participants_row['item1'] = row['item1']
+                participants_row['item2'] = row['item2']
+                participants_row['item3'] = row['item3']
+                participants_row['item4'] = row['item4']
+                participants_row['item5'] = row['item5']
+                participants_row['item6'] = row['item6']
+                participants_row['win'] = row['win']
+                participants_row['gameDuration'] = match_detail['info']['gameDuration']
+                participants.append(participants_row)
+            df = pd.DataFrame(participants)
+            for i in df['item0']:
+                Item0id = df['item0']
+                Item0 = str(Item0id) +'.png'
+                Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
+            
             name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
             profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
             #return demodict
-            return render_template('summoner.html', profile_img = profileicon_file_path, name = name, level = sumonnerLevel) #pass profile_img as variable for
+            return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return "there was an issue searching for this summoner or this summoner does not exist."  #incase the summoner name being searched for does not exist.
@@ -73,7 +130,7 @@ def summoner(name):
 
 
 # global variables
-api_key = 'RGAPI-ef30d9e4-211a-4db0-89d3-d9df24285594'
+api_key = ''
 
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
