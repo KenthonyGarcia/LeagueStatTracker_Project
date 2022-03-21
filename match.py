@@ -11,8 +11,8 @@ import json
 import pandas as pd
 import os
 
-PROFILEICON_FOLDER = os.path.join('static', 'img', 'profileicon')
-ITEM_FOLDER = os.path.join('static', 'img', 'item')
+#PROFILEICON_FOLDER = os.path.join('static', 'img', 'profileicon')
+#ITEM_FOLDER = os.path.join('static', 'img', 'item')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
@@ -40,29 +40,30 @@ def Main():
         sumname = request.form['content'] #gets summoner name from inputed text.
         #profile = Summoner(name=sumname)
         region = 'NA1' #for now we will focus on the North American server.
-      
+
         if region == 'NA1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'BR1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'LA1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'LA2':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'OC1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'KR':
-            match_region = 'ASIA';
+            match_region = 'ASIA'
         elif region == 'JP1':
-            match_region = 'ASIA';
+            match_region = 'ASIA'
         elif region == 'EUN1':
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
         elif region == 'EUW1':
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
         elif region == 'RU':
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
         else:
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
+        
         try:
             summonerdict = watcher.summoner.by_name(region, sumname) #pulls summoner data from riot api into a dictionary
             subsets_needed = ['name', 'profileIconId', 'summonerLevel'] #for now all we need is name, profileIconId, and summonerLevel.
@@ -99,23 +100,26 @@ def Main():
                 participants_row['gameDuration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
-            """
+            
             for i in df['item0']:
                 Item0id = df['item0']
                 Item0 = str(Item0id) +'.png'
-                Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
-            """
+                #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
+                Item0_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item0
+            
             name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
-            profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
+            #profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
+            profileicon_file_path = 'https://league-img.s3.amazonaws.com/img/profileicon/' + profile_icon_id
             #return demodict
             #user = request.form['content']
-            return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
-            #return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
+            #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
+            return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
-            return redirect(url_for("error"))
+            return "there was an issue searching for this summoner or this summoner does not exist."
+            #return render_template('notFound.html')
     else:
         return render_template('index.html') 
 
@@ -137,7 +141,7 @@ def error():
     return render_template('notFound.html')
 
 # global variables
-api_key = ''#Remember to remove the API key before pushing
+api_key = 'RGAPI-9574d001-d82b-4e79-8bf3-69fb65ee81b6'#Remember to remove the API key before pushing
 
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
