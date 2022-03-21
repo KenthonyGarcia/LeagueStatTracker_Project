@@ -42,27 +42,27 @@ def Main():
         region = 'NA1' #for now we will focus on the North American server.
       
         if region == 'NA1':
-            match_region = 'AMERICAS'
+            match_region = 'AMERICAS';
         elif region == 'BR1':
-            match_region = 'AMERICAS'
+            match_region = 'AMERICAS';
         elif region == 'LA1':
-            match_region = 'AMERICAS'
+            match_region = 'AMERICAS';
         elif region == 'LA2':
-            match_region = 'AMERICAS'
+            match_region = 'AMERICAS';
         elif region == 'OC1':
-            match_region = 'AMERICAS'
+            match_region = 'AMERICAS';
         elif region == 'KR':
-            match_region = 'ASIA'
+            match_region = 'ASIA';
         elif region == 'JP1':
-            match_region = 'ASIA'
+            match_region = 'ASIA';
         elif region == 'EUN1':
-            match_region = 'EUROPE'
+            match_region = 'EUROPE';
         elif region == 'EUW1':
-            match_region = 'EUROPE'
+            match_region = 'EUROPE';
         elif region == 'RU':
-            match_region = 'EUROPE'
+            match_region = 'EUROPE';
         else:
-            match_region = 'EUROPE'
+            match_region = 'EUROPE';
         try:
             summonerdict = watcher.summoner.by_name(region, sumname) #pulls summoner data from riot api into a dictionary
             subsets_needed = ['name', 'profileIconId', 'summonerLevel'] #for now all we need is name, profileIconId, and summonerLevel.
@@ -99,18 +99,19 @@ def Main():
                 participants_row['gameDuration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
+            """
             for i in df['item0']:
                 Item0id = df['item0']
                 Item0 = str(Item0id) +'.png'
                 Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
-            
+            """
             name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
             profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
             #return demodict
-            user = request.form['content']
-            return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = user, level = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
+            #user = request.form['content']
+            return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
             #return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
@@ -127,7 +128,7 @@ def summoner(name, pi, ii, username, lev, tb, title):
     summonerdf = watcher.summoner.by_name(region, name)
     summonerdf['summonerLevel']
     """
-    return "hello"
+
 
 @app.route('/error', methods=['GET', 'POST']) #main page that will be loaded first.
 def error():
@@ -136,7 +137,8 @@ def error():
     return render_template('notFound.html')
 
 # global variables
-api_key = ''
+api_key = ''#Remember to remove the API key before pushing
+
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
