@@ -42,27 +42,27 @@ def Main():
         region = 'NA1' #for now we will focus on the North American server.
       
         if region == 'NA1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'BR1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'LA1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'LA2':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'OC1':
-            match_region = 'AMERICAS';
+            match_region = 'AMERICAS'
         elif region == 'KR':
-            match_region = 'ASIA';
+            match_region = 'ASIA'
         elif region == 'JP1':
-            match_region = 'ASIA';
+            match_region = 'ASIA'
         elif region == 'EUN1':
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
         elif region == 'EUW1':
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
         elif region == 'RU':
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
         else:
-            match_region = 'EUROPE';
+            match_region = 'EUROPE'
         try:
             summonerdict = watcher.summoner.by_name(region, sumname) #pulls summoner data from riot api into a dictionary
             subsets_needed = ['name', 'profileIconId', 'summonerLevel'] #for now all we need is name, profileIconId, and summonerLevel.
