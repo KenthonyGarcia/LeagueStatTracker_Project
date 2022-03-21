@@ -141,7 +141,7 @@ def error():
     return render_template('notFound.html')
 
 # global variables
-api_key = 'RGAPI-9574d001-d82b-4e79-8bf3-69fb65ee81b6'#Remember to remove the API key before pushing
+api_key = ''#Remember to remove the API key before pushing
 
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
