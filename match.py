@@ -17,7 +17,7 @@ import os
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
 db = SQLAlchemy(app)
-app.config['UPLOAD_FOLDER'] = PROFILEICON_FOLDER
+#app.config['UPLOAD_FOLDER'] = PROFILEICON_FOLDER
 
 """
 class Summoner(db.Model):
