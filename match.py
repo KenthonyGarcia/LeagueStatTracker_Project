@@ -99,18 +99,19 @@ def Main():
                 participants_row['gameDuration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
+            """
             for i in df['item0']:
                 Item0id = df['item0']
                 Item0 = str(Item0id) +'.png'
                 Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
-            
+            """
             name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
             profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
             #return demodict
-            user = request.form['content']
-            return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = user, level = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
+            #user = request.form['content']
+            return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
             #return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
@@ -127,7 +128,7 @@ def summoner(name, pi, ii, username, lev, tb, title):
     summonerdf = watcher.summoner.by_name(region, name)
     summonerdf['summonerLevel']
     """
-    return "hello"
+
 
 @app.route('/error', methods=['GET', 'POST']) #main page that will be loaded first.
 def error():
@@ -136,7 +137,7 @@ def error():
     return render_template('notFound.html')
 
 # global variables
-api_key = 'RGAPI-b41e89dc-3ca0-4dd3-a70e-1f62f6e8d813'
+api_key = ''#Remember to remove the API key before pushing
 
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
