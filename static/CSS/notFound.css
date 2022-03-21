@@ -1,21 +1,21 @@
-.TitleName{
-    color: #8e7b78;
-    font-size:80px;
-    text-align: center
+.bg{
+    background-color: black;
 }
 
-.LeagueLogo{
+.mumuLogo{
     width: 500px; 
     padding: 20px;  
     margin-left: auto;
     margin-right: 400px;
 }
 
-.bg{
-    background-color: black;
+.errorText{
+    color: #8e7b78;
+    font-size:60;
+    text-align: center
 }
 
-.buttonSearch {
+.homeButton {
     background-color: gray;
     border-color: #318CA5;
     border-width: 5px;
@@ -27,4 +27,8 @@
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
+  }
+
+  .bottomText{
+    color: #318CA5;
   }

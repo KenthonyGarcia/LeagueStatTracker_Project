@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>LeagueStatTracker</title>
+<title>Rift Tracker</title>
 {% endblock %}
 
 {% block body %}
 <body class = bg>
-    <div class="content">   
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-        <h1 class = "TitleName">LeagueStatTracker*(subject to change)</h1>
-        <a href="/summoner/{{sumname}}">Search</a>
-        <div class="form">
-            <form action="/" method="POST">
-                <input type="text" name="content" id="content">
-                <input class = buttonSearch type="submit" value="FIND PLAYER">
-            </form>
+    <div class= webpage>   
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/summoner.css') }}">
+        <div>
+            <img class = iconStyle src="{{profile_img}}">
+            <h1 class = nameStyle >{{name}}</h1>
+            <h1 class = levelStyle>{{level}}</h1>
         </div>
-        <img class = LeagueLogo src="{{url_for('static', filename='LeagueLogo.jpg')}}"/>
     </div>
+    {% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+{% endfor %}
 </body>
 {% endblock %}

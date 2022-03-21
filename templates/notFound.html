@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+<title>Rift Tracker</title>
+{% endblock %}
+
+{% block body %}
+<body class = bg>
+    <div class="content">   
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/notFound.css') }}">
+        <h1 class = "errorText">User not found, try again!</h1>
+        <h3 class = "bottomText">Please make sure you typed a known username and try again!</h3>
+        <div class="form">
+            <form action="/" method="POST">
+                <input class = homeButton type="submit" value="TRY AGAIN">
+            </form>
+        </div>
+        <img class = mumuLogo src="{{url_for('static', filename='sadMumu.jpg')}}"/>
+    </div>
+</body>
+
+
+{% endblock %}
