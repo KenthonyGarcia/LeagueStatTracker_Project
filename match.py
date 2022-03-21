@@ -5,7 +5,7 @@ Created on Mon Feb 21 10:57:41 2022
 """
 from riotwatcher import LolWatcher, ApiError
 from IPython.display import display
-from flask import Flask, request, render_template, url_for
+from flask import Flask, request, render_template, url_for,redirect
 from flask_sqlalchemy import SQLAlchemy
 import json
 import pandas as pd
@@ -109,28 +109,34 @@ def Main():
             profile_icon_id = str(imgid) +'.png'
             profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
             #return demodict
-            return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
+            user = request.form['content']
+            return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = user, level = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
+            #return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
-            return "there was an issue searching for this summoner or this summoner does not exist."  #incase the summoner name being searched for does not exist.
+            return redirect(url_for("error"))
     else:
         return render_template('index.html') 
 
 @app.route('/summoner/<string:name>', methods=['GET', 'POST'])
-def summoner(name):
-    
+def summoner(name, pi, ii, username, lev, tb, title):
+    return render_template('summoner.html', profile_img = pi, item0_img = ii,  name = username, level = lev, tables= tb, titles= title) #pass profile_img as variable for
     #user1 = request.form.get['Username']
     #region1 = request.form.get['region']
     """
     summonerdf = watcher.summoner.by_name(region, name)
-    summonerdf['profileIconId']
     summonerdf['summonerLevel']
     """
     return "hello"
 
+@app.route('/error', methods=['GET', 'POST']) #main page that will be loaded first.
+def error():
+    if request.method == "POST":
+        return redirect(url_for("Main"))
+    return render_template('notFound.html')
 
 # global variables
-api_key = ''
+api_key = 'RGAPI-b41e89dc-3ca0-4dd3-a70e-1f62f6e8d813'
 
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")
