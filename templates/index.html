@@ -4,18 +4,19 @@
 <title>Rift Tracker</title>
 {% endblock %}
 
+
 {% block body %}
 <body class = bg>
-    <div class="content">   
+    <div class="content" position: relative>   
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
         <h1 class = "TitleName">RiftTracker</h1>
+        <img class = LeagueLogo src="{{url_for('static', filename='LeagueLogo.jpg')}}"/>
         <div class="form">
             <form action="/" method="POST" autocomplete="off">
-                <input type="text" name="content" id="content">
+                <input class = searchName type="text" name="content" id="content">
                 <input class = buttonSearch type="submit" value="FIND PLAYER">
             </form>
         </div>
-        <img class = LeagueLogo src="{{url_for('static', filename='LeagueLogo.jpg')}}"/>
     </div>
 </body>
 

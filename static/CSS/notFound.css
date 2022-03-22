@@ -3,16 +3,20 @@
 }
 
 .mumuLogo{
-    width: 500px; 
+    width: 450px; 
     padding: 20px;  
     margin-left: auto;
-    margin-right: 400px;
+    margin-right: 500px;
 }
 
 .errorText{
-    color: #8e7b78;
+    color: #AB8D34;
     font-size:60;
-    text-align: center
+    text-align: center;
+}
+
+.searchName{
+    margin: 4px 130px;
 }
 
 .homeButton {
@@ -26,9 +30,12 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
-  }
+    margin: 4px 130px;
+}
 
-  .bottomText{
+
+.bottomText{
     color: #318CA5;
-  }
+    text-align: center;
+    right: 50px;
+}

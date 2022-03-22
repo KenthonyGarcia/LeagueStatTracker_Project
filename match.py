@@ -118,7 +118,7 @@ def Main():
             return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path,  name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
-            return "there was an issue searching for this summoner or this summoner does not exist."
+            return render_template('notFound.html')
             #return render_template('notFound.html')
     else:
         return render_template('index.html') 
