@@ -5,6 +5,7 @@ Created on Mon Feb 21 10:57:41 2022
 """
 from riotwatcher import LolWatcher, ApiError
 from IPython.display import display
+from IPython.core.display import HTML
 from flask import Flask, request, render_template, url_for,redirect
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -33,6 +34,9 @@ class Summoner(db.Model):
 #    regions = ['NA1', 'EUW1', 'EUN1', 'BR1', 'LA1', 'LA2', 'OCE', 'RU1', 'TR1', 'JP1', 'KR'] #region codes
 #    return render_template('index.html', regions = regions) #regions is the dropdown menu variable name
 #----
+def path_to_image_html(path):
+    html_function = '<img src="'+ path + '" width="60">'
+    return html_function
 
 @app.route('/', methods=['POST', 'GET']) #main page that will be loaded first.
 def Main():
@@ -103,68 +107,68 @@ def Main():
             
             championdf= []
             for i in df['championName']:
-                championid = df['championName']
                 champion = str(i) +'.png'
                 champion_file_path = 'https://league-img.s3.amazonaws.com/img/champion/' + champion
-                championdf.append(champion_file_path)
+                championdf.append(path_to_image_html(champion_file_path))
             df['championName'] = championdf
+            championicon = df['championName'].to_list()
             
             item0df= []
             for i in df['item0']:
-                Item0id = df['item0']
                 Item0 = str(i) +'.png'
                 #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item0_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item0
-                item0df.append(Item0_file_path)
+                item0df.append(path_to_image_html(Item0_file_path))
             df['item0'] = item0df
+            Item0icon = df['item0'].to_list()
             item1df= []
             for i in df['item1']:
-                Item1id = df['item1']
                 Item1 = str(i) +'.png'
                 #Item1_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item1)
                 Item1_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item1
-                item1df.append(Item1_file_path)
+                item1df.append(path_to_image_html(Item1_file_path))
             df['item1'] = item1df
+            Item1icon = df['item1'].to_list()
             item2df= []
             for i in df['item2']:
-                Item2id = df['item2']
                 Item2 = str(i) +'.png'
                 #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item2_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item2
-                item2df.append(Item2_file_path)
+                item2df.append(path_to_image_html(Item2_file_path))
             df['item2'] = item2df
+            Item2icon = df['item2'].to_list()
             item3df= []
             for i in df['item3']:
-                Item3id = df['item3']
                 Item3 = str(i) +'.png'
                 #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item3_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item3
-                item3df.append(Item3_file_path)
+                item3df.append(path_to_image_html(Item3_file_path))
             df['item3'] = item3df
+            Item3icon = df['item3'].to_list()
             item4df= []
             for i in df['item4']:
-                Item4id = df['item4']
                 Item4 = str(i) +'.png'
                 #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item4_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item4
-                item4df.append(Item4_file_path)
+                item4df.append(path_to_image_html(Item4_file_path))
             df['item4'] = item4df
+            Item4icon = df['item4'].to_list()
             item5df= []
             for i in df['item5']:
-                Item5id = df['item5']
                 Item5 = str(i) +'.png'
                 #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item5_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item5
-                item5df.append(Item5_file_path)
+                item5df.append(path_to_image_html(Item5_file_path))
             df['item5'] = item5df
+            Item5icon = df['item5'].to_list()
             item6df= []
             for i in df['item6']:
-                Item6id = df['item6']
                 Item6 = str(i) +'.png'
                 #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item6_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item6
-                item6df.append(Item6_file_path)
-            df['item6'] = item6df 
+                item6df.append(path_to_image_html(Item6_file_path))
+            df['item6'] = item6df
+            Item6icon = df['item6'].to_list() 
             
             name = str(nameid)
             sumonnerLevel = str(Levelid)
@@ -174,7 +178,7 @@ def Main():
             #return demodict
             #user = request.form['content']
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
-            return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0_file_path, item1_img = Item1_file_path, item2_img = Item2_file_path, item3_img = Item3_file_path, item4_img = Item4_file_path, item5_img = Item5_file_path, item6_img = Item6_file_path, champion_img = champion_file_path, name = name, level = sumonnerLevel, tables=[df.to_html(classes='data')], titles=df.columns.values) #pass profile_img as variable for
+            return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return render_template('notFound.html')
@@ -200,7 +204,7 @@ def error():
     return render_template('notFound.html')
 
 # global variables
-api_key = ''#Remember to remove the API key before pushing
+api_key = 'RGAPI-f20e95bb-fe3f-4c4b-9bad-63ec60dcbbf0'#Remember to remove the API key before pushing
 
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")

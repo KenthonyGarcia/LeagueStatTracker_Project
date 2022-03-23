@@ -1,0 +1,26 @@
+body{
+    margin: 0;
+}
+
+.header {
+    background-color: grey;
+    display: flex;
+    align-items: baseline;
+    padding: .5rem;
+    gap: 1rem;
+}
+
+.link {
+    background: none;
+    border: none;
+    text-decoration: none;
+    color: #777;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    padding: 0;
+}
+
+.link:hover {
+    color: black;
+}
