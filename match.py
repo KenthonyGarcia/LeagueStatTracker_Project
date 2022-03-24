@@ -41,7 +41,7 @@ def path_to_image_html(path):
 @app.route('/', methods=['POST', 'GET']) #main page that will be loaded first.
 def Main():
     if request.method == 'POST':
-        sumname = request.form['content'] #gets summoner name from inputed text.
+        sumname = request.form['SummonerName'] #gets summoner name from inputed text.
         #profile = Summoner(name=sumname)
         region = 'NA1' #for now we will focus on the North American server.
 
@@ -104,14 +104,26 @@ def Main():
                 participants_row['gameDuration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
+            summonerName = df['summonerName'].to_list() #Creates a list for each dataframe column making it easier for frontend to use the values of the variables.
+            indPosition = df['individualPosition'].to_list()
+            kills = df['kills'].to_list()
+            deaths = df['deaths'].to_list()
+            assists = df['assists'].to_list()
+            visionScore = df['visionScore'].to_list()
+            goldEarned = df['goldEarned'].to_list()
+            creepScore = df['totalMinionsKilled'].to_list()
+            win = df['win'].to_list()
+            gameDuration = df['gameDuration'].to_list()
+            
+            #sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration
             
             championdf= []
             for i in df['championName']:
                 champion = str(i) +'.png'
                 champion_file_path = 'https://league-img.s3.amazonaws.com/img/champion/' + champion
-                championdf.append(path_to_image_html(champion_file_path))
+                championdf.append(path_to_image_html(champion_file_path))#appends the paths to a new dataframe
             df['championName'] = championdf
-            championicon = df['championName'].to_list()
+            championicon = df['championName'].to_list() #makes a list of paths for the champion images
             
             item0df= []
             for i in df['item0']:
@@ -178,7 +190,7 @@ def Main():
             #return demodict
             #user = request.form['content']
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
-            return render_template('summoner.html', profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
+            return render_template('summoner.html', sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return render_template('notFound.html')
@@ -203,8 +215,10 @@ def error():
         return redirect(url_for("Main"))
     return render_template('notFound.html')
 
-# global variables
-api_key = ''#Remember to remove the API key before pushing
+# global variables/ ALSO REMOVE API KEY BEFORE PUSHING
+api_key = ''#Remember to remove the API key before pushing.
+#Remember to remove the API key before pushing code to github repository.
+
 
 watcher = LolWatcher(api_key)
 #region = input("Enter your region: ")

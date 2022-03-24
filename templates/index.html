@@ -6,16 +6,18 @@
 
 
 {% block body %}
-<body class = bg>
+
+<body class = bgImg>
     <div class="content" position: relative>   
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
         <h1 class = "TitleName">RiftTracker</h1>
-        <img class = LeagueLogo src="{{url_for('static', filename='LeagueLogo.jpg')}}"/>
         <div class="form">
-            <form action="/" method="POST" autocomplete="off">
-                <input class = searchName type="text" name="content" id="content">
-                <input class = buttonSearch type="submit" value="FIND PLAYER">
-            </form>
+            <div id = "inputWrapper">
+                <form action="/" method="POST" autocomplete="off">
+                    <input class= searchName type="text" placeholder="Summoner..." name="SummonerName">
+                    <button class = buttonSearch type="submit"><img src="{{url_for('static', filename='search_icon.png')}}" width = "15"/></button>
+                  </form>
+            </div>
         </div>
     </div>
 </body>

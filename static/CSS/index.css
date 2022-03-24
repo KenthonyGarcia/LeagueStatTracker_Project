@@ -1,11 +1,11 @@
 .TitleName{
-    color: #AB8D34;
+    color: #00e1ff;
     font-size:80px;
     text-align: center
 }
 
 .LeagueLogo{
-    width: 450px; 
+    width: 250px; 
     margin-right: 20px;
 }
 
@@ -14,20 +14,33 @@
 }
 
 .searchName{
-    margin: 4px 45px;
-}
-.buttonSearch {
-    background-color: gray;
-    border-color: #318CA5;
-    border-width: 5px;
-    border-radius: 15px;
-    color: white;
-    padding: 15px 32px;
+    padding: 10px 50px;
+    font-size: 17px;
+    border: 1px solid grey;
+    width: 30%;
+    background: #f1f1f1;
+    display: inline-block;
+    cursor: pointer;
     text-align: center;
+}
+
+.buttonSearch{
+    background-color: rgb(65, 132, 255);
+    border-color: #318CA5;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    cursor: pointer;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 100px;
+   
     
   }
 
+.bgImg{
+    background-image: url(static/Talon_12.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    background-size: 100% 100%;
+}
