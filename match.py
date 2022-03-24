@@ -90,6 +90,7 @@ def Main():
                 participants_row['kills'] = row['kills']
                 participants_row['deaths'] = row['deaths']
                 participants_row['assists'] = row['assists']
+                participants_row['killParticipation'] = row['killParticipation']
                 participants_row['visionScore'] = row['visionScore']
                 participants_row['goldEarned'] = row['goldEarned']
                 participants_row['totalMinionsKilled'] = row['totalMinionsKilled']
@@ -104,19 +105,31 @@ def Main():
                 participants_row['gameDuration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
+            #turning the dataframe columns to a list for frontend use.
             summonerName = df['summonerName'].to_list() #Creates a list for each dataframe column making it easier for frontend to use the values of the variables.
             indPosition = df['individualPosition'].to_list()
             kills = df['kills'].to_list()
             deaths = df['deaths'].to_list()
             assists = df['assists'].to_list()
+            killParticipation = df['killParticipation'].to_list()
             visionScore = df['visionScore'].to_list()
             goldEarned = df['goldEarned'].to_list()
             creepScore = df['totalMinionsKilled'].to_list()
             win = df['win'].to_list()
             gameDuration = df['gameDuration'].to_list()
             
+            #KDA Calculation
+            KA =[i + j for i, j in zip(kills, assists)]
+            KDA_raw =[i / j for i, j in zip(KA, deaths)]
+            KDA_rounded = [round(num, 2) for num in KDA_raw]
+            
+            #GameDuration conversion
+          
+            
             #sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration
             
+            
+            #creating lists of image paths for items and champions
             championdf= []
             for i in df['championName']:
                 champion = str(i) +'.png'
@@ -190,7 +203,7 @@ def Main():
             #return demodict
             #user = request.form['content']
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
-            return render_template('summoner.html', sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
+            return render_template('summoner.html', sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return render_template('notFound.html')
