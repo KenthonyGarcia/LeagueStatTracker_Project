@@ -49,16 +49,16 @@ def path_to_image_html(path):
 
 client = boto3.client(
     's3',
-    aws_access_key_id = 'AAKIAYRXVCULE37WQLKFP',
-    aws_secret_access_key = '6NcyHF+2YDSGDUnHxVAkqq6SyKHwxv/z+C2GWyOI',
+    aws_access_key_id = '',
+    aws_secret_access_key = '',
     region_name = 'us-east-1'
 )
     
 # Creating the high level object oriented interface
 resource = boto3.resource(
     's3',
-    aws_access_key_id = 'AKIAYRXVCULE37WQLKFP',
-    aws_secret_access_key = '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',
+    aws_access_key_id = '',
+    aws_secret_access_key = '',
     region_name = 'us-east-1'
 )
 # Fetch the list of existing buckets
