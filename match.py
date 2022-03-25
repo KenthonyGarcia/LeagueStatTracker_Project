@@ -10,6 +10,7 @@ from flask import Flask, request, render_template, url_for, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
+import boto3
 import re
 import json
 import pandas as pd
@@ -21,7 +22,7 @@ import os
 #ITEM_FOLDER = os.path.join('static', 'img', 'item')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
+
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -45,6 +46,31 @@ mysql = MySQL(app)
 def path_to_image_html(path):
     html_function = '<img src="'+ path + '" width="60">'
     return html_function
+
+client = boto3.client(
+    's3',
+    aws_access_key_id = 'AAKIAYRXVCULE37WQLKFP',
+    aws_secret_access_key = '6NcyHF+2YDSGDUnHxVAkqq6SyKHwxv/z+C2GWyOI',
+    region_name = 'us-east-1'
+)
+    
+# Creating the high level object oriented interface
+resource = boto3.resource(
+    's3',
+    aws_access_key_id = 'AKIAYRXVCULE37WQLKFP',
+    aws_secret_access_key = '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',
+    region_name = 'us-east-1'
+)
+# Fetch the list of existing buckets
+clientResponse = client.list_buckets()
+    
+# Print the bucket names one by one
+print('Printing bucket names...')
+for bucket in clientResponse['Buckets']:
+    print(f'Bucket Name: {bucket["Name"]}')
+
+
+
 
 @app.route('/', methods=['POST', 'GET']) #main page that will be loaded first.
 def Main():
@@ -264,12 +290,43 @@ def login():
             session['id'] = account['id']
             session['username'] = account['username']
             msg = 'Logged in successfully !'
-            return render_template('index.html', msg = msg)
+            return render_template('profile.html', msg = msg)
         else:
             msg = 'Incorrect username / password !'
     return render_template('login.html', msg = msg)
 
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
+@app.route('/register', methods =['GET', 'POST'])
+def register():
+    msg = ''
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form :
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE username = % s', (username, ))
+        account = cursor.fetchone()
+        if account:
+            msg = 'Account already exists !'
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = 'Invalid email address !'
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers !'
+        elif not username or not password or not email:
+            msg = 'Please fill out the form !'
+        else:
+            cursor.execute('INSERT INTO accounts VALUES (NULL, % s, % s, % s)', (username, password, email, ))
+            mysql.connection.commit()
+            msg = 'You have successfully registered !'
+    elif request.method == 'POST':
+        msg = 'Please fill out the form !'
+    return render_template('register.html', msg = msg)
 
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")

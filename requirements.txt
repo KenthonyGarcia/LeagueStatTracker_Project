@@ -5,3 +5,4 @@ pandas
 ipython
 riotwatcher
 re
+boto3
