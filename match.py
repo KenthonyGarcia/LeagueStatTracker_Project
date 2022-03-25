@@ -6,28 +6,36 @@ Created on Mon Feb 21 10:57:41 2022
 from riotwatcher import LolWatcher, ApiError
 from IPython.display import display
 from IPython.core.display import HTML
-from flask import Flask, request, render_template, url_for,redirect
+from flask import Flask, request, render_template, url_for, redirect, session
 from flask_sqlalchemy import SQLAlchemy
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import re
 import json
 import pandas as pd
 import os
+
+
 
 #PROFILEICON_FOLDER = os.path.join('static', 'img', 'profileicon')
 #ITEM_FOLDER = os.path.join('static', 'img', 'item')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///league.db'
-db = SQLAlchemy(app)
-#app.config['UPLOAD_FOLDER'] = PROFILEICON_FOLDER
 
-"""
-class Summoner(db.Model):
-    name = db.Column(db.String, primary_key=True)
-    profileIconId = db.Column(db.Integer, primary_key=True)
-    
-    def __repr__(self):
-        return '<Summoner %r>' % self.id
-"""
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'your password'
+app.config['MYSQL_DB'] = 'login'
+
+# global variables/ ALSO REMOVE API KEY BEFORE PUSHING
+api_key = ''#Remember to remove the API key before pushing.
+#Remember to remove the API key before pushing code to github repository.
+
+
+watcher = LolWatcher(api_key)
+
+mysql = MySQL(app)
 #----dropdown for regions
 #@app.route('/', methods = ['GET'])
 #def dropdown():
@@ -90,7 +98,6 @@ def Main():
                 participants_row['kills'] = row['kills']
                 participants_row['deaths'] = row['deaths']
                 participants_row['assists'] = row['assists']
-                participants_row['killParticipation'] = row['killParticipation']
                 participants_row['visionScore'] = row['visionScore']
                 participants_row['goldEarned'] = row['goldEarned']
                 participants_row['totalMinionsKilled'] = row['totalMinionsKilled']
@@ -105,13 +112,27 @@ def Main():
                 participants_row['gameDuration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
+            challenges = []
+            for row in match_detail['info']['participants']:
+                challenges_row = {}
+                challenges_row['challenges'] = row['challenges']
+                challenges.append(challenges_row)
+            challengesdf = pd.DataFrame(challenges)
+
+            challenges = []
+            for row in challengesdf['challenges']:
+                challenges_row = {}
+                challenges_row['killParticipation'] = row['killParticipation']
+                challenges.append(challenges_row)
+            challengeslistdf = pd.DataFrame(challenges)
+            
             #turning the dataframe columns to a list for frontend use.
             summonerName = df['summonerName'].to_list() #Creates a list for each dataframe column making it easier for frontend to use the values of the variables.
             indPosition = df['individualPosition'].to_list()
             kills = df['kills'].to_list()
             deaths = df['deaths'].to_list()
             assists = df['assists'].to_list()
-            killParticipation = df['killParticipation'].to_list()
+            killParticipation = challengeslistdf['killParticipation'].to_list()
             visionScore = df['visionScore'].to_list()
             goldEarned = df['goldEarned'].to_list()
             creepScore = df['totalMinionsKilled'].to_list()
@@ -221,19 +242,35 @@ def summoner(name, pi, ii, username, lev, tb, title):
     summonerdf['summonerLevel']
     """
 
-
+#error Page
 @app.route('/error', methods=['GET', 'POST']) #main page that will be loaded first.
 def error():
     if request.method == "POST":
         return redirect(url_for("Main"))
     return render_template('notFound.html')
 
-# global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-api_key = ''#Remember to remove the API key before pushing.
-#Remember to remove the API key before pushing code to github repository.
+#login Page
+@app.route('/login', methods =['GET', 'POST'])
+def login():
+    msg = ''
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        username = request.form['username']
+        password = request.form['password']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE username = % s AND password = % s', (username, password, ))
+        account = cursor.fetchone()
+        if account:
+            session['loggedin'] = True
+            session['id'] = account['id']
+            session['username'] = account['username']
+            msg = 'Logged in successfully !'
+            return render_template('index.html', msg = msg)
+        else:
+            msg = 'Incorrect username / password !'
+    return render_template('login.html', msg = msg)
 
 
-watcher = LolWatcher(api_key)
+
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
 #region = region.upper()
