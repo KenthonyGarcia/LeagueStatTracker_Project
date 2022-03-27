@@ -19,6 +19,8 @@ import re
 import json
 import pandas as pd
 import os
+import pyotp
+import sys
 
 
 
@@ -34,14 +36,14 @@ app.config['MYSQL_PASSWORD'] = 'your password'
 app.config['MYSQL_DB'] = 'login'
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-api_key = 'RGAPI-6b771f45-1da8-4cf0-a5d5-9e65f01ff49a'#Remember to remove the API key before pushing.
+api_key = ''#Remember to remove the API key before pushing.
 #Remember to remove the API key before pushing code to github repository.
 
 
 watcher = LolWatcher(api_key)
 
 mysql = MySQL(app)
-dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='AKIAWANQWOMS5FXZBOM5', aws_secret_access_key = '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', aws_session_token = '')
+dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='', aws_secret_access_key = '')
 
 #----dropdown for regions
 #@app.route('/', methods = ['GET'])
@@ -222,6 +224,28 @@ def Main():
                 item6df.append(path_to_image_html(Item6_file_path))
             df['item6'] = item6df
             Item6icon = df['item6'].to_list() 
+
+            #Player top mastery champs----------------
+            top_champ_mastery = watcher.champion_mastery.by_summoner('NA1', summonerdict['id'])
+            top_champ_mastery[0:3]
+
+            champs = []
+            for row in top_champ_mastery['championId']['championLevel']['championPoints']:
+                champ_row = {}
+                champ_row['championId'] = row['championId']
+                champ_row['championLevel'] = row['championLevel']
+                champ_row['championPoints'] = row['championPoints']
+                champs.append(champ_row)
+            masterydf = pd.DataFrame(champs)
+            champid = masterydf['championId'].to_list()
+            #champid needs to be converted to name
+            champlevel = masterydf['championLevel'].to_list()
+            champpoints = masterydf['championPoints'].to_list()
+            
+
+            #-----------------------------------------
+
+
             
             name = str(nameid)
             sumonnerLevel = str(Levelid)
@@ -231,7 +255,12 @@ def Main():
             #return demodict
             #user = request.form['content']
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
-            return render_template('summoner.html', sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration, profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
+            return render_template('summoner.html',test = top_champ_mastery, sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, 
+            gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, 
+            item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, 
+            item6_img = Item6icon, champion_img = championicon, name = name, 
+            level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values, 
+            champ_level = champlevel, champ_pts = champpoints) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return render_template('notFound.html')
