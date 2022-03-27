@@ -8,9 +8,13 @@ from IPython.display import display
 from IPython.core.display import HTML
 from flask import Flask, request, render_template, url_for, redirect, session
 from flask_sqlalchemy import SQLAlchemy
+from boto3.dynamodb.conditions import Key, Attr
 from flask_mysqldb import MySQL
+from PIL import Image
 import MySQLdb.cursors
 import boto3
+import pyotp
+import qrcode
 import re
 import json
 import pandas as pd
@@ -30,13 +34,15 @@ app.config['MYSQL_PASSWORD'] = 'your password'
 app.config['MYSQL_DB'] = 'login'
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-api_key = ''#Remember to remove the API key before pushing.
+api_key = 'RGAPI-6b771f45-1da8-4cf0-a5d5-9e65f01ff49a'#Remember to remove the API key before pushing.
 #Remember to remove the API key before pushing code to github repository.
 
 
 watcher = LolWatcher(api_key)
 
 mysql = MySQL(app)
+dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='AKIAWANQWOMS5FXZBOM5', aws_secret_access_key = '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', aws_session_token = '')
+
 #----dropdown for regions
 #@app.route('/', methods = ['GET'])
 #def dropdown():
@@ -46,31 +52,6 @@ mysql = MySQL(app)
 def path_to_image_html(path):
     html_function = '<img src="'+ path + '" width="60">'
     return html_function
-
-client = boto3.client(
-    's3',
-    aws_access_key_id = '',
-    aws_secret_access_key = '',
-    region_name = 'us-east-1'
-)
-    
-# Creating the high level object oriented interface
-resource = boto3.resource(
-    's3',
-    aws_access_key_id = '',
-    aws_secret_access_key = '',
-    region_name = 'us-east-1'
-)
-# Fetch the list of existing buckets
-clientResponse = client.list_buckets()
-    
-# Print the bucket names one by one
-print('Printing bucket names...')
-for bucket in clientResponse['Buckets']:
-    print(f'Bucket Name: {bucket["Name"]}')
-
-
-
 
 @app.route('/', methods=['POST', 'GET']) #main page that will be loaded first.
 def Main():
@@ -250,7 +231,7 @@ def Main():
             #return demodict
             #user = request.form['content']
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
-            return render_template('summoner.html', sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
+            return render_template('summoner.html', sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration, profile_img = profileicon_file_path, item0_img = Item0icon, item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, item6_img = Item6icon, champion_img = championicon, name = name, level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return render_template('notFound.html')
@@ -259,8 +240,8 @@ def Main():
         return render_template('index.html') 
 
 @app.route('/summoner/<string:name>', methods=['GET', 'POST'])
-def summoner(name, pi, ii, username, lev, tb, title):
-    return render_template('summoner.html', profile_img = pi, item0_img = ii,  name = username, level = lev, tables= tb, titles= title) #pass profile_img as variable for
+def summoner(sN, pi, ii, lev, tb, title):
+    return render_template('summoner.html', profile_img = pi, item0_img = ii,  name = sN, level = lev, tables= tb, titles= title) #pass profile_img as variable for
     #user1 = request.form.get['Username']
     #region1 = request.form.get['region']
     """
@@ -279,20 +260,16 @@ def error():
 @app.route('/login', methods =['GET', 'POST'])
 def login():
     msg = ''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-        username = request.form['username']
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
+        email = request.form['email']
         password = request.form['password']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE username = % s AND password = % s', (username, password, ))
-        account = cursor.fetchone()
-        if account:
-            session['loggedin'] = True
-            session['id'] = account['id']
-            session['username'] = account['username']
+        table = dynamodb.Table('users')
+        response = table.query(KeyConditionExpression=Key('email').eq(email))
+        items = response['Items']
+        username = items[0]['username']
+        if password == items[0]['password']:
             msg = 'Logged in successfully !'
-            return render_template('profile.html', msg = msg)
-        else:
-            msg = 'Incorrect username / password !'
+            return render_template('profile.html', msg = msg, username = username)
     return render_template('login.html', msg = msg)
 
 @app.route('/logout')
@@ -307,23 +284,26 @@ def register():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form :
         username = request.form['username']
-        password = request.form['password']
+        summonername = request.form['SummonerName']
         email = request.form['email']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE username = % s', (username, ))
-        account = cursor.fetchone()
-        if account:
-            msg = 'Account already exists !'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            msg = 'Invalid email address !'
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Username must contain only characters and numbers !'
-        elif not username or not password or not email:
-            msg = 'Please fill out the form !'
-        else:
-            cursor.execute('INSERT INTO accounts VALUES (NULL, % s, % s, % s)', (username, password, email, ))
-            mysql.connection.commit()
-            msg = 'You have successfully registered !'
+        password = request.form['password']
+        table = dynamodb.Table('users')
+        
+        table.put_item(
+            Item={
+                'username': username,
+                'SummonerName' : summonername,
+                'email' : email,
+                'password' : password,
+            }   
+        )
+        #Google Authenticator QrCode generator
+        sec_key = pyotp.random_base32()
+        otp_gen = pyotp.TOTP(sec_key)
+        auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
+        qrimg0 = qrcode.make(auth_str)
+        msg = 'You have successfully registered, please log in to your account!'
+        return render_template('login.html', msg = msg, qrimg= qrimg0 )
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('register.html', msg = msg)
