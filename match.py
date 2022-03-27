@@ -295,10 +295,18 @@ def login():
         table = dynamodb.Table('users')
         response = table.query(KeyConditionExpression=Key('email').eq(email))
         items = response['Items']
+        sec_key = items['sec_key']
+        otp_gen = pyotp.TOTP(sec_key)
+        
         username = items[0]['username']
         if password == items[0]['password']:
-            msg = 'Logged in successfully !'
-            return render_template('profile.html', msg = msg, username = username)
+            code = request.form['otp_code']
+            if otp_gen.now() == code:
+                msg = 'Logged in successfully!'
+                return render_template('profile.html', msg = msg, username = username)
+            elif otp_gen.now() != code:
+                msg = 'Incorrect Authentication Code try again'
+                return render_template('login.html', msg = msg)
     return render_template('login.html', msg = msg)
 
 @app.route('/logout')
@@ -317,20 +325,21 @@ def register():
         email = request.form['email']
         password = request.form['password']
         table = dynamodb.Table('users')
-        
+        #Google Authenticator QrCode generator
+        sec_key = pyotp.random_base32()
+        otp_gen = pyotp.TOTP(sec_key)
+        auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
+        qrimg0 = qrcode.make(auth_str)
         table.put_item(
             Item={
                 'username': username,
                 'SummonerName' : summonername,
                 'email' : email,
                 'password' : password,
+                'sec_key' : sec_key,
             }   
         )
-        #Google Authenticator QrCode generator
-        sec_key = pyotp.random_base32()
-        otp_gen = pyotp.TOTP(sec_key)
-        auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
-        qrimg0 = qrcode.make(auth_str)
+        
         msg = 'You have successfully registered, please log in to your account!'
         return render_template('login.html', msg = msg, qrimg= qrimg0 )
     elif request.method == 'POST':
