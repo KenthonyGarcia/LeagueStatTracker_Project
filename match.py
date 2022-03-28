@@ -224,13 +224,13 @@ def Main():
                 item6df.append(path_to_image_html(Item6_file_path))
             df['item6'] = item6df
             Item6icon = df['item6'].to_list() 
-
+            
             #Player top mastery champs----------------
             top_champ_mastery = watcher.champion_mastery.by_summoner('NA1', summonerdict['id'])
             top_champ_mastery[0:3]
 
             champs = []
-            for row in top_champ_mastery['championId']['championLevel']['championPoints']:
+            for row in top_champ_mastery[0:3]:
                 champ_row = {}
                 champ_row['championId'] = row['championId']
                 champ_row['championLevel'] = row['championLevel']
@@ -339,12 +339,15 @@ def register():
                 'sec_key' : sec_key,
             }   
         )
-        
-        msg = 'You have successfully registered, please log in to your account!'
-        return render_template('login.html', msg = msg, qrimg= qrimg0 )
+        code = request.form['otp_code']
+        if otp_gen.now() == code:
+            msg = 'You have successfully registered, please log in to your account!'
+            return render_template('login.html', msg = msg)
+        elif otp_gen.now() != code:
+                msg = 'Incorrect Authentication Code try again'
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
-    return render_template('register.html', msg = msg)
+    return render_template('register.html', msg = msg, qrimg= qrimg0)
 
 #region = input("Enter your region: ")
 #name = input("Enter your Summoner Name(Case Sensitive): ")
