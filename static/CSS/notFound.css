@@ -6,17 +6,19 @@
     width: 450px; 
     padding: 20px;  
     margin-left: auto;
-    margin-right: 500px;
+    margin-right: auto;
+    display: block;
+    width: 50%;
 }
 
 .errorText{
-    color: #AB8D34;
+    color: red;
     font-size:60;
     text-align: center;
 }
 
 .searchName{
-    margin: 4px 130px;
+    margin: 4px 50px;
 }
 
 .homeButton {
@@ -30,12 +32,13 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 130px;
+    margin: 4px 120px;
+    
 }
 
 
 .bottomText{
-    color: #318CA5;
+    color: black;
     text-align: center;
     right: 50px;
 }

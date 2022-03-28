@@ -2,31 +2,67 @@
     padding: 5px 120px;
     width: 150px;
     height: 70px;
-    background-color: #236B8E; 
+    background-color: #1565b3;
 }
 
 .border{
-    padding: 80px 50px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top:  60px;
+    padding-bottom: 110px;
     width: 400px;
     height: 450px;
     border: 1px solid #236B8E;
     border-radius: 0px;
-    background-color: #9AC0CD;
+    background-color: #e0dddd;
+}
+
+.border2{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top:  30px;
+    padding-bottom: 100px;
+    width: 400px;
+    height: 350px;
+    border: 1px solid #236B8E;
+    border-radius: 0px;
+    background-color: #e0dddd;
+}
+
+.title-text{
+    color: #236B8E; 
+    font-style: oblique;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.title-text2{
+    color: #8e7b78; 
+    font-style: oblique;
+    font-weight: bold;
+    font-size: 50px;
 }
 
 .btn {
     padding: 10px 40px;
-    background-color: #236B8E; 
+    background-color: #7FE960; 
     color: #FFFFFF;
     font-style: oblique;
     font-weight: bold;
     border-radius: 10px;
+    font-size: 24px;
 }
+
+.btn:hover{
+    background: #DAF802;
+    color: white;
+}
+
 
 .textbox{
     padding: 10px 40px;
-    background-color: #236B8E; 
-    text-color: #FFFFFF;
+    background-color: #1B82E6; 
+    color: white;
     border-radius: 10px;
 }
       
@@ -44,7 +80,99 @@
 }
 
 .bottom{
-    color: #236B8E;
+    color: white;
     font-style: oblique;
     font-weight: bold;
 }
+
+.bg-register{
+    background-image: url(/static/register.jpg);
+    background-size: cover;
+}
+
+.bg-login{
+    background-image: url(/static/login.jpg);
+    background-size: cover;
+}
+
+.form{
+    width: 70%;
+    position: relative;
+    height: 50px;
+}
+
+.form input{
+    width: 100%;
+    height: 100%;
+    padding-top: 20px;
+    border: none;
+}
+
+.form label{
+    position: absolute;
+    bottom: 10px;
+    left: 32%;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.form label::after{
+    content: "";
+    position: absolute;
+    left: 0%;
+    bottom: -1px;
+    height: 100%;
+    width: 100%;
+    transform: translateX(-100%);
+}
+
+.content-name{
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    transition: all 0.3s ease;
+}
+
+.content-name2{
+    position: absolute;
+    bottom: 5px;
+    left: -30px;
+    transition: all 0.3s ease;
+}
+
+.content-name3{
+    position: absolute;
+    bottom: 5px;
+    left: -50px;
+    transition: all 0.3s ease;
+}
+
+.content-name4{
+    position: absolute;
+    bottom: 5px;
+    left: 15px;
+    transition: all 0.3s ease;
+}
+
+.form input:focus + .label-name .content-name{
+    transform: translateY(-150%);
+    font-size: 20px;
+}
+
+.form input:focus + .label-name .content-name2{
+    transform: translateY(-150%);
+    font-size: 20px;
+}
+
+.form input:focus + .label-name .content-name3{
+    transform: translateY(-150%);
+    font-size: 20px;
+}
+
+.form input:focus + .label-name .content-name4{
+    transform: translateY(-150%);
+    font-size: 20px;
+}
+
+

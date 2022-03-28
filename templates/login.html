@@ -1,24 +1,44 @@
-<html>
+<html class="bg-login" >
     <head>
         <meta charset="UTF-8">
         <title> Login </title>
+        <h1 class = "title-text2">RiftTracker</h1>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">           
     </head>
     <body></br></br></br></br></br>
         <div align="center">
-          <div align="center" class="border">
+          <div align="center" class="border2">
              <div class="header">
                 <h1 class="word">Login</h1>
              </div></br></br></br>
             <h2 class="word">
                 <form action="{{ url_for('login') }}" method="post">
                   <div class="msg">{{ msg }}</div>
-                    <input id="email" name="email" type="text" placeholder="Enter Your email" class="textbox"/></br></br>
-                    <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br></br>
-                    <input type="submit" class="btn" value="Sign In"></br></br>
-                    <input id="otp_code" name="otp_code" type="text" placeholder="Enter Your Authentication Code" class="textbox"/></br></br>
+                  <div class = "form">
+                    <input id="email" name="email" type="text" class="textbox" autocomplete="off"/>
+                    <label for = "name" class = "label-name">
+                      <span class = "content-name4">Email </span>
+                    </label>
+                  </div>
+                  </br></br>
+                  <div class = "form">
+                    <input id="password" name="password" type="password" class="textbox" autocomplete="off"/>
+                    <label for = "name" class = "label-name">
+                      <span class = "content-name">Password</span>
+                    </label>
+                  </div>
+                  <br><br>
+                  <div class = "form">
+                    <input id="otp_code" name="otp_code" type="text" class="textbox" autocomplete="off"/>
+                    <label for = "name" class = "label-name">
+                      <span class = "content-name3">Authentication Code</span>
+                    </label>
+                  </div>
+                  </br></br></br>
+      
                 </form>
             </h2>
+            <input type="submit" class="btn" value="Sign In"></br></br>
             <p class="bottom">Dont't have an account?  <a class="bottom" href="{{url_for('register')}}"> Sign Up here</a></p>
           </div>
         </div>

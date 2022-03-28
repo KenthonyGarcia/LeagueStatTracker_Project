@@ -1,10 +1,11 @@
-<html>
+<html class = "bg-register">
     <head>
         <meta charset="UTF-8">
-        <title> Register </title>
+        <title class = "title"> Register </title>
+        <h1 class = "title-text">RiftTracker</h1>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">              
     </head>
-    <body></br></br></br></br></br>
+    <body></br>
         <div align="center">
           <div align="center" class="border">
              <div class="header">
@@ -13,10 +14,35 @@
             <h2 class="word">
                 <form action="{{ url_for('register') }}" method="post">
                   <div class="msg">{{ msg }}</div>
-                    <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
-                    <input id="SummonerName" name="SummonerName" type="text" placeholder="Enter Your Summoner Name" class="textbox"/></br></br>
-                    <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br>
-                    <input id="email" name="email" type="text" placeholder="Enter Your Email ID" class="textbox"/></br></br>
+                  <div class = "form">
+                    <input id="username" name="username" type="text" class="textbox" autocomplete="off"/>
+                    <label for = "name" class = "label-name">
+                      <span class = "content-name">Username</span>
+                    </label>
+                  </div>
+                    </br></br>
+                    <div class = "form">
+                      <input id="SummonerName" name="SummonerName" type="text"  class="textbox" autocomplete="off"/>
+                      <label for = "SummonerName" class = "label-name">
+                        <span class = "content-name2">Summoner Name</span>
+                      </label>
+                    </div>
+                    </br></br>
+                    <div class = "form">
+                      <input id="password" name="password" type="password" class="textbox" autocomplete="off"/>
+                      <label for = "name" class = "label-name">
+                        <span class = "content-name">Password</span>
+                      </label>
+                    </div>
+                    </br></br>
+                    <div class = "form">
+                      <input id="email" name="email" type="text" class="textbox" autocomplete="off"/>
+                      <label for = "SummonerName" class = "label-name">
+                        <span class = "content-name3">Valid Email-Address</span>
+                      </label>
+                    </div>
+                    </br></br>
+              
                     <input type="submit" class="btn" value="Sign Up"></br>
                 </form>
             </h2>
