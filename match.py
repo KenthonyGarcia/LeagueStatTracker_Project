@@ -230,7 +230,7 @@ def Main():
             top_champ_mastery[0:3]
 
             champs = []
-            for row in top_champ_mastery['championId']['championLevel']['championPoints']:
+            for row in top_champ_mastery[0:3]:
                 champ_row = {}
                 champ_row['championId'] = row['championId']
                 champ_row['championLevel'] = row['championLevel']

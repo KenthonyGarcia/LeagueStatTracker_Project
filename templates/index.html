@@ -2,13 +2,21 @@
 
 {% block head %} 
 <title>Rift Tracker</title>
+
 {% endblock %}
 
 
 {% block body %}
 
 <body class = bgImg>
-    <div class="content" position: relative>   
+    <button class = buttonLogin type="submit">
+        <a class = "textLogin" href="{{url_for('login')}}"> LOGIN</a>
+    </button>
+    <button class = buttonRegister type="submit">
+        <a class = "textRegister" href="{{url_for('register')}}"> REGISTER</a>
+    </button>
+    <br><br>
+    <div class="content" position: relative> 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
         <h1 class = "TitleName">RiftTracker</h1>
         <div class="form">
@@ -19,8 +27,7 @@
                   </form>
             </div>
         </div>
-        <p class="bottom">Already have an account?  <a class="bottom" href="{{url_for('login')}}"> Sign In here</a></p>
-        <p class="bottom">Dont't have an account?  <a class="bottom" href="{{url_for('register')}}"> Sign Up here</a></p>
+
     </div>
 </body>
 
