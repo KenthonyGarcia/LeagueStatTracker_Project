@@ -79,6 +79,12 @@
     font-weight: bold;
 }
 
+.words{
+    color: #000000;
+    font-style: oblique;
+    font-weight: bold;
+}
+
 .bottom{
     color: white;
     font-style: oblique;
@@ -86,6 +92,11 @@
 }
 
 .bg-register{
+    background-image: url(/static/register.jpg);
+    background-size: cover;
+}
+
+.bg-authentication{
     background-image: url(/static/register.jpg);
     background-size: cover;
 }

@@ -30,10 +30,7 @@ import sys
 app = Flask(__name__)
 
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'your password'
-app.config['MYSQL_DB'] = 'login'
+
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
 api_key = ''#Remember to remove the API key before pushing.
@@ -154,10 +151,6 @@ def Main():
             KDA_rounded = [round(num, 2) for num in KDA_raw]
             
             #GameDuration conversion
-          
-            
-            #sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, vS =  visionScore, gE = goldEarned, cS = creepScore, W = win, gD = gameDuration
-            
             
             #creating lists of image paths for items and champions
             championdf= []
@@ -171,7 +164,6 @@ def Main():
             item0df= []
             for i in df['item0']:
                 Item0 = str(i) +'.png'
-                #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item0_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item0
                 item0df.append(path_to_image_html(Item0_file_path))
             df['item0'] = item0df
@@ -179,7 +171,6 @@ def Main():
             item1df= []
             for i in df['item1']:
                 Item1 = str(i) +'.png'
-                #Item1_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item1)
                 Item1_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item1
                 item1df.append(path_to_image_html(Item1_file_path))
             df['item1'] = item1df
@@ -187,7 +178,6 @@ def Main():
             item2df= []
             for i in df['item2']:
                 Item2 = str(i) +'.png'
-                #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item2_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item2
                 item2df.append(path_to_image_html(Item2_file_path))
             df['item2'] = item2df
@@ -195,7 +185,6 @@ def Main():
             item3df= []
             for i in df['item3']:
                 Item3 = str(i) +'.png'
-                #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item3_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item3
                 item3df.append(path_to_image_html(Item3_file_path))
             df['item3'] = item3df
@@ -203,7 +192,6 @@ def Main():
             item4df= []
             for i in df['item4']:
                 Item4 = str(i) +'.png'
-                #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item4_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item4
                 item4df.append(path_to_image_html(Item4_file_path))
             df['item4'] = item4df
@@ -211,7 +199,6 @@ def Main():
             item5df= []
             for i in df['item5']:
                 Item5 = str(i) +'.png'
-                #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item5_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item5
                 item5df.append(path_to_image_html(Item5_file_path))
             df['item5'] = item5df
@@ -219,7 +206,6 @@ def Main():
             item6df= []
             for i in df['item6']:
                 Item6 = str(i) +'.png'
-                #Item0_file_path = os.path.join(app.config['UPLOAD_FOLDER'], Item0)
                 Item6_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item6
                 item6df.append(path_to_image_html(Item6_file_path))
             df['item6'] = item6df
@@ -245,15 +231,10 @@ def Main():
 
             #-----------------------------------------
 
-
-            
             name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
-            #profileicon_file_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_icon_id)
             profileicon_file_path = 'https://league-img.s3.amazonaws.com/img/profileicon/' + profile_icon_id
-            #return demodict
-            #user = request.form['content']
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
             return render_template('summoner.html',test = top_champ_mastery, sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, 
             gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, 
@@ -271,13 +252,8 @@ def Main():
 @app.route('/summoner/<string:name>', methods=['GET', 'POST'])
 def summoner(sN, pi, ii, lev, tb, title):
     return render_template('summoner.html', profile_img = pi, item0_img = ii,  name = sN, level = lev, tables= tb, titles= title) #pass profile_img as variable for
-    #user1 = request.form.get['Username']
-    #region1 = request.form.get['region']
-    """
-    summonerdf = watcher.summoner.by_name(region, name)
-    summonerdf['summonerLevel']
-    """
-
+    
+ 
 #error Page
 @app.route('/error', methods=['GET', 'POST']) #main page that will be loaded first.
 def error():
@@ -295,7 +271,7 @@ def login():
         table = dynamodb.Table('users')
         response = table.query(KeyConditionExpression=Key('email').eq(email))
         items = response['Items']
-        sec_key = items['sec_key']
+        sec_key = items[0]['sec_key']
         otp_gen = pyotp.TOTP(sec_key)
         
         username = items[0]['username']
@@ -339,110 +315,36 @@ def register():
                 'sec_key' : sec_key,
             }   
         )
-        code = request.form['otp_code']
+        msg = 'You have successfully registered, please scan the qrcode'
+        return redirect(url_for('authentication', msg = msg, email = email))
+    elif request.method == 'POST':
+        msg = 'Please fill out the form !'
+    return render_template('register.html', msg = msg)
+
+#Authentication Page
+@app.route('/Authentication', methods =['GET', 'POST'])
+def authentication():
+    msg = ''
+    code = request.form.get('otp_code')
+    email = request.args.get('email', None)
+    print(email)
+    table = dynamodb.Table('users')
+    response = table.query(KeyConditionExpression=Key('email').eq(email))
+    items = response['Items']
+    sec_key = items[0]['sec_key']
+    print(sec_key)
+    otp_gen = pyotp.TOTP(sec_key)
+    auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
+    qrimg0 = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=' + auth_str
+    if request.method == "POST":
+        msg = ''
+        code = request.form.get('otp_code')
         if otp_gen.now() == code:
             msg = 'You have successfully registered, please log in to your account!'
             return render_template('login.html', msg = msg)
         elif otp_gen.now() != code:
                 msg = 'Incorrect Authentication Code try again'
-    elif request.method == 'POST':
-        msg = 'Please fill out the form !'
-    return render_template('register.html', msg = msg, qrimg= qrimg0)
+    return render_template('authentication.html', msg = msg, qrimg = qrimg0)
 
-#region = input("Enter your region: ")
-#name = input("Enter your Summoner Name(Case Sensitive): ")
-#region = region.upper()
-#match_region = 'NA'
-
-"""
-if region == 'NA':
-    region = 'NA1';
-elif region == 'BR':
-    region = 'BR1';
-elif region == 'LAN':
-    region = 'LA1';
-elif region == 'LAS':
-    region = 'LA2';
-elif region == 'OCE':
-    region = 'OC1';
-elif region == 'KR':
-    region = 'KR';
-elif region == 'JP':
-    region = 'JP1';
-elif region == 'EUNE':
-    region = 'EUN1';
-elif region == 'EUW':
-    region = 'EUW1';
-elif region == 'RU':
-    region = 'RU';
-elif region == 'TR':
-    region = 'TR1';
-
-if region == 'NA1':
-    match_region = 'AMERICAS';
-elif region == 'BR1':
-    match_region = 'AMERICAS';
-elif region == 'LA1':
-    match_region = 'AMERICAS';
-elif region == 'LA2':
-    match_region = 'AMERICAS';
-elif region == 'OC1':
-    match_region = 'AMERICAS';
-elif region == 'KR':
-    match_region = 'ASIA';
-elif region == 'JP1':
-    match_region = 'ASIA';
-elif region == 'EUN1':
-    match_region = 'EUROPE';
-elif region == 'EUW1':
-    match_region = 'EUROPE';
-elif region == 'RU':
-    match_region = 'EUROPE';
-else:
-    match_region = 'EUROPE';
-
-
-me = watcher.summoner.by_name(region, name)
-
-print(me['summonerLevel'])
-print(me['profileIconId'])
-
-
-my_matches = watcher.match.matchlist_by_puuid(match_region, me['puuid'],start=0,count=20)
-#print(my_matches)
-
-# fetch last match detail
-last_match = my_matches[0]
-match_detail = watcher.match.by_id(match_region, last_match)
-
-participants = []
-for row in match_detail['info']['participants']:
-    participants_row = {}
-    participants_row['summonerName'] = row['summonerName']
-    participants_row['individualPosition'] = row['individualPosition']
-    participants_row['championName'] = row['championName']
-    participants_row['champLevel'] = row['champLevel']
-    participants_row['kills'] = row['kills']
-    participants_row['deaths'] = row['deaths']
-    participants_row['assists'] = row['assists']
-    participants_row['visionScore'] = row['visionScore']
-    participants_row['goldEarned'] = row['goldEarned']
-    participants_row['totalMinionsKilled'] = row['totalMinionsKilled']
-    participants_row['item0'] = row['item0']
-    participants_row['item1'] = row['item1']
-    participants_row['item2'] = row['item2']
-    participants_row['item3'] = row['item3']
-    participants_row['item4'] = row['item4']
-    participants_row['item5'] = row['item5']
-    participants_row['item6'] = row['item6']
-    participants_row['win'] = row['win']
-    participants_row['gameDuration'] = match_detail['info']['gameDuration']
-    participants.append(participants_row)
-df = pd.DataFrame(participants)
-output_csv = "Last_Match.csv"
-df.to_csv(output_csv)
-"""
- 
-#print(df)
 if __name__ == "__main__":
     app.run(debug=True)
