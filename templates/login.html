@@ -1,11 +1,17 @@
+
+
 <html class="bg-login" >
+  <video autoplay muted loop id="bgVideo">
+    <source src="/static/login.mp4" type="video/mp4">
+  </video>
     <head>
         <meta charset="UTF-8">
         <title> Login </title>
         <h1 class = "title-text2">RiftTracker</h1>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">           
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">         
     </head>
     <body></br></br></br></br></br>
+      
         <div align="center">
           <div align="center" class="border2">
              <div class="header">
@@ -29,18 +35,15 @@
                   </div>
                   <br><br>
                   <div class = "form">
-                    <input id="otp_code" name="otp_code" type="text" class="textbox" autocomplete="off"/>
-                    <label for = "name" class = "label-name">
-                      <span class = "content-name3">Authentication Code</span>
-                    </label>
+                    <input id="otp_code" name="otp_code" type="text" placeholder="Authentication Code" class="textbox" autocomplete="off"/>
                   </div>
                   </br></br></br>
-      
+                  <input type="submit" class="btn" value="Sign In"></br></br>
                 </form>
             </h2>
-            <input type="submit" class="btn" value="Sign In"></br></br>
             <p class="bottom">Dont't have an account?  <a class="bottom" href="{{url_for('register')}}"> Sign Up here</a></p>
           </div>
         </div>
     </body>
+    
 </html>

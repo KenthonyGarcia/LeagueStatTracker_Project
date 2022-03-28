@@ -213,7 +213,6 @@ def Main():
             
             #Player top mastery champs----------------
             top_champ_mastery = watcher.champion_mastery.by_summoner('NA1', summonerdict['id'])
-            top_champ_mastery[0:3]
 
             champs = []
             for row in top_champ_mastery[0:3]:
@@ -268,6 +267,7 @@ def login():
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
         email = request.form['email']
         password = request.form['password']
+        code = request.form['otp_code']
         table = dynamodb.Table('users')
         response = table.query(KeyConditionExpression=Key('email').eq(email))
         items = response['Items']
@@ -276,7 +276,6 @@ def login():
         
         username = items[0]['username']
         if password == items[0]['password']:
-            code = request.form['otp_code']
             if otp_gen.now() == code:
                 msg = 'Logged in successfully!'
                 return render_template('profile.html', msg = msg, username = username)
@@ -305,7 +304,7 @@ def register():
         sec_key = pyotp.random_base32()
         otp_gen = pyotp.TOTP(sec_key)
         auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
-        qrimg0 = qrcode.make(auth_str)
+        qrimg0 = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=' + auth_str
         table.put_item(
             Item={
                 'username': username,
@@ -316,7 +315,7 @@ def register():
             }   
         )
         msg = 'You have successfully registered, please scan the qrcode'
-        return redirect(url_for('authentication', msg = msg, email = email))
+        return redirect(url_for('authentication', msg = msg, email = email, qrimg = qrimg0))
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('register.html', msg = msg)
@@ -325,25 +324,17 @@ def register():
 @app.route('/Authentication', methods =['GET', 'POST'])
 def authentication():
     msg = ''
-    code = request.form.get('otp_code')
     email = request.args.get('email', None)
-    print(email)
+    email0 = email
     table = dynamodb.Table('users')
-    response = table.query(KeyConditionExpression=Key('email').eq(email))
+    response = table.query(KeyConditionExpression=Key('email').eq(str(email0)))
     items = response['Items']
     sec_key = items[0]['sec_key']
-    print(sec_key)
     otp_gen = pyotp.TOTP(sec_key)
     auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
     qrimg0 = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=' + auth_str
     if request.method == "POST":
         msg = ''
-        code = request.form.get('otp_code')
-        if otp_gen.now() == code:
-            msg = 'You have successfully registered, please log in to your account!'
-            return render_template('login.html', msg = msg)
-        elif otp_gen.now() != code:
-                msg = 'Incorrect Authentication Code try again'
     return render_template('authentication.html', msg = msg, qrimg = qrimg0)
 
 if __name__ == "__main__":

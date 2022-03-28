@@ -53,10 +53,6 @@
     margin-right: 20px;
 }
 
-.bg{
-    background-color: black;
-}
-
 .searchName{
     padding: 10px 50px;
     font-size: 17px;
@@ -85,9 +81,47 @@
     background-color: #EECD49;
 }
 
-.bgImg{
-    background-image: url(static/Talon_12.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed; 
-    background-size: 100% 100%;
+div.overlay {
+    opacity: .9;
+    background-color: black;
+    position: absolute;
+    left: 0; top: 0; height: 256px; width: 256px;
 }
+
+.layer {
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body, html {
+    margin: 0;
+    font-family: sans-serif;
+    position: relative;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+    background-image: url(/static/main.webm);
+    background-size: cover;
+}
+
+.content {
+    margin: 0 auto;
+    top-margin: 100px;
+    width: 400px;
+}
+
+.form {
+    margin-top: 20px;
+}
+
+
+#bgVideo {
+    position: fixed;
+    z-index: -1;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+  }

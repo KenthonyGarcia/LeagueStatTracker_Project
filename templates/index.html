@@ -1,35 +1,47 @@
-{% extends 'base.html' %}
-
-{% block head %} 
-<title>Rift Tracker</title>
-
-{% endblock %}
-
-
-{% block body %}
-
-<body class = bgImg>
-    <button class = buttonLogin type="submit">
-        <a class = "textLogin" href="{{url_for('login')}}"> LOGIN</a>
-    </button>
-    <button class = buttonRegister type="submit">
-        <a class = "textRegister" href="{{url_for('register')}}"> REGISTER</a>
-    </button>
-    <br><br>
-    <div class="content" position: relative> 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-        <h1 class = "TitleName">RiftTracker</h1>
-        <div class="form">
-            <div id = "inputWrapper">
-                <form action="/" method="POST" autocomplete="off">
-                    <input class= searchName type="text" placeholder="Summoner..." name="SummonerName">
-                    <button class = buttonSearch type="submit"><img src="{{url_for('static', filename='search_icon.png')}}" width = "15"/></button>
-                  </form>
+<!DOCTYPE html>
+<html lang="en">
+    <div class = 'layer'>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+            
+            {% block head %}
+            <title>Rift Tracker</title>
+            {% endblock %}
+        </head>
+        <body>
+            {% block body %}
+            <body class = 'layer'>
+                <div class = 'layer'>
+                <video autoplay muted loop id="bgVideo">
+                    <source src="/static/main.webm" type="video/mp4">
+                  </video>
+                </div>
+                <button class = buttonLogin type="submit">
+                    <a class = "textLogin" href="{{url_for('login')}}"> LOGIN</a>
+                </button>
+                <button class = buttonRegister type="submit">
+                    <a class = "textRegister" href="{{url_for('register')}}"> REGISTER</a>
+                </button>
+                <br><br>
+                <div class="content" position: relative> 
+                    <h1 class = "TitleName">RiftTracker</h1>
+                    <div class="form">
+                        <div id = "inputWrapper">
+                            <form action="/" method="POST" autocomplete="off">
+                                <input class= searchName type="text" placeholder="Summoner..." name="SummonerName">
+                                <button class = buttonSearch type="submit"><img src="{{url_for('static', filename='search_icon.png')}}" width = "15"/></button>
+                              </form>
+                        </div>
+                    </div>
+            
+                </div>
             </div>
-        </div>
+            </body>
+            {% endblock %}
+        </body>
+    </html>
+</div>    
 
-    </div>
-</body>
-
-
-{% endblock %}
