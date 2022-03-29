@@ -33,14 +33,14 @@ app = Flask(__name__)
 
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-api_key = 'RGAPI-300f0b74-0b1f-4f0f-8078-03613ddaae19'#Remember to remove the API key before pushing.
+api_key = ''#Remember to remove the API key before pushing.
 #Remember to remove the API key before pushing code to github repository.
 
 
 watcher = LolWatcher(api_key)
 
 mysql = MySQL(app)
-dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='AKIAWANQWOMS6KODKVO4', aws_secret_access_key = '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')
+dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='', aws_secret_access_key = '')
 
 #----dropdown for regions
 #@app.route('/', methods = ['GET'])
