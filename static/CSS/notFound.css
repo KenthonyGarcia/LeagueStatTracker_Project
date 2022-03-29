@@ -19,27 +19,39 @@
 }
 
 .searchName{
-    margin: 4px 50px;
+    padding: 10px 50px;
+    font-size: 17px;
+    border: 1px solid grey;
+    width: 50%;
+    background: #f1f1f1;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
 }
 
 .homeButton {
-    background-color: gray;
-    border-color: #318CA5;
-    border-width: 5px;
-    border-radius: 15px;
+    background-color: #AB8D34;
+    border-color: black;
     color: white;
-    padding: 15px 32px;
+    padding: 10px 16px;
     text-align: center;
+    cursor: pointer;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 120px;
+    width: 15%;
     
+}
+
+.container{
+    margin: 0;
+    font-family: sans-serif;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
 }
 
 
 .bottomText{
-    color: black;
+    color: rgb(255, 255, 255);
     text-align: center;
     right: 50px;
 }
