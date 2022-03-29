@@ -6,14 +6,19 @@
     margin-right: auto;
 }
 
+.bg{
+  background-image: url(/static/main5.jpg);
+  background-size: cover;
+}
+
 .nameStyle{
-    color: #8e7b78;
+    color: black;
     font-size:60;
     text-align: center
 }
 
 .levelStyle{
-    color: #8e7b78;
+    color: black;
     font-size:60;
     text-align: center
 }
@@ -22,6 +27,8 @@
     border: 10px solid #8e7b78;
     border-style: double;
     background-color: rgb(0, 0, 0);
+    background-image: url(/static/summonerBg.jpg);
+    background-size: cover;
 }
 
 /* Dropdown Button */
@@ -49,7 +56,7 @@
   .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f1f1f1;
+    background-color: #8e7b78;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
@@ -61,10 +68,12 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    background-color: #8e7b78;
+
   }
   
   /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #ddd}
+  .dropdown-content a:hover {background-color: #dbbd5a}
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {display:block;}

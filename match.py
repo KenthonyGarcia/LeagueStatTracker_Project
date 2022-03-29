@@ -33,7 +33,7 @@ app = Flask(__name__)
 
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-api_key = 'RGAPI-8a3b27c2-f8f7-45a8-9d5e-ab49350775e6'#Remember to remove the API key before pushing.
+api_key = 'RGAPI-300f0b74-0b1f-4f0f-8078-03613ddaae19'#Remember to remove the API key before pushing.
 #Remember to remove the API key before pushing code to github repository.
 
 
@@ -97,16 +97,16 @@ def Main():
             participants = []
             for row in match_detail['info']['participants']:
                 participants_row = {}
-                participants_row['summonerName'] = row['summonerName']
-                participants_row['individualPosition'] = row['individualPosition']
-                participants_row['championName'] = row['championName']
-                participants_row['champLevel'] = row['champLevel']
-                participants_row['kills'] = row['kills']
-                participants_row['deaths'] = row['deaths']
-                participants_row['assists'] = row['assists']
-                participants_row['visionScore'] = row['visionScore']
-                participants_row['goldEarned'] = row['goldEarned']
-                participants_row['totalMinionsKilled'] = row['totalMinionsKilled']
+                participants_row['Summoner Name'] = row['summonerName']
+                participants_row['Position'] = row['individualPosition']
+                participants_row['Champion Name'] = row['championName']
+                participants_row['Champion Level'] = row['champLevel']
+                participants_row['Kills'] = row['kills']
+                participants_row['Deaths'] = row['deaths']
+                participants_row['Assists'] = row['assists']
+                participants_row['Vision Score'] = row['visionScore']
+                participants_row['Gold Earned'] = row['goldEarned']
+                participants_row['Minions Killed'] = row['totalMinionsKilled']
                 participants_row['item0'] = row['item0']
                 participants_row['item1'] = row['item1']
                 participants_row['item2'] = row['item2']
@@ -114,8 +114,8 @@ def Main():
                 participants_row['item4'] = row['item4']
                 participants_row['item5'] = row['item5']
                 participants_row['item6'] = row['item6']
-                participants_row['win'] = row['win']
-                participants_row['gameDuration'] = match_detail['info']['gameDuration']
+                participants_row['Win'] = row['win']
+                participants_row['Game Duration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
             challenges = []
@@ -133,17 +133,17 @@ def Main():
             challengeslistdf = pd.DataFrame(challenges)
             
             #turning the dataframe columns to a list for frontend use.
-            summonerName = df['summonerName'].to_list() #Creates a list for each dataframe column making it easier for frontend to use the values of the variables.
-            indPosition = df['individualPosition'].to_list()
-            kills = df['kills'].to_list()
-            deaths = df['deaths'].to_list()
-            assists = df['assists'].to_list()
+            summonerName = df['Summoner Name'].to_list() #Creates a list for each dataframe column making it easier for frontend to use the values of the variables.
+            indPosition = df['Position'].to_list()
+            kills = df['Kills'].to_list()
+            deaths = df['Deaths'].to_list()
+            assists = df['Assists'].to_list()
             killParticipation = challengeslistdf['killParticipation'].to_list()
-            visionScore = df['visionScore'].to_list()
-            goldEarned = df['goldEarned'].to_list()
-            creepScore = df['totalMinionsKilled'].to_list()
-            win = df['win'].to_list()
-            gameDuration = df['gameDuration'].to_list()
+            visionScore = df['Vision Score'].to_list()
+            goldEarned = df['Gold Earned'].to_list()
+            creepScore = df['Minions Killed'].to_list()
+            win = df['Win'].to_list()
+            gameDuration = df['Game Duration'].to_list()
             
             #KDA Calculation
             KA =[i + j for i, j in zip(kills, assists)]
@@ -154,12 +154,12 @@ def Main():
             
             #creating lists of image paths for items and champions
             championdf= []
-            for i in df['championName']:
+            for i in df['Champion Name']:
                 champion = str(i) +'.png'
                 champion_file_path = 'https://league-img.s3.amazonaws.com/img/champion/' + champion
                 championdf.append(path_to_image_html(champion_file_path))#appends the paths to a new dataframe
-            df['championName'] = championdf
-            championicon = df['championName'].to_list() #makes a list of paths for the champion images
+            df['Champion Name'] = championdf
+            championicon = df['Champion Name'].to_list() #makes a list of paths for the champion images
             
             item0df= []
             for i in df['item0']:
