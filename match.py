@@ -33,14 +33,14 @@ app = Flask(__name__)
 
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-api_key = ''#Remember to remove the API key before pushing.
+api_key = 'RGAPI-171125f1-5851-4907-aaaa-191954e9951e'#Remember to remove the API key before pushing.
 #Remember to remove the API key before pushing code to github repository.
 
 
 watcher = LolWatcher(api_key)
 
 mysql = MySQL(app)
-dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='', aws_secret_access_key = '')
+dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='AKIAWANQWOMS6KODKVO4', aws_secret_access_key = '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')
 
 #----dropdown for regions
 #@app.route('/', methods = ['GET'])
@@ -55,7 +55,24 @@ def path_to_image_html(path):
 @app.route('/', methods=['POST', 'GET']) #main page that will be loaded first.
 def Main():
     if request.method == 'POST':
-        sumname = request.form['SummonerName'] #gets summoner name from inputed text.
+        name = request.form['SummonerName'] #gets summoner name from inputed text.
+        #profile = Summoner(name=sumname)
+        regions = ['NA1', 'EUW1', 'EUN1', 'BR1', 'LA1', 'LA2', 'OCE', 'RU1', 'TR1', 'JP1', 'KR'] #region codes
+        region = regions
+        
+        try:
+            
+            return redirect(url_for('summoner', name = name, region = region)) #pass profile_img as variable for
+            #note: change index.html(search page) to summoner.html(result page)
+        except:
+            return redirect(url_for('error'))
+            #return render_template('notFound.html')
+    return render_template('index.html') 
+
+@app.route('/summoner/<string:name>', methods=['GET', 'POST'])
+def summoner(name):
+    if request.method == 'POST':
+        sumname = request.args.get['SummonerName'] #gets summoner name from inputed text.
         #profile = Summoner(name=sumname)
         region = 'NA1' #for now we will focus on the North American server.
 
@@ -230,7 +247,6 @@ def Main():
 
             #-----------------------------------------
 
-            name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
             profileicon_file_path = 'https://league-img.s3.amazonaws.com/img/profileicon/' + profile_icon_id
@@ -238,19 +254,14 @@ def Main():
             return render_template('summoner.html',test = top_champ_mastery, sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, 
             gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, 
             item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, 
-            item6_img = Item6icon, champion_img = championicon, name = name, 
+            item6_img = Item6icon, champion_img = championicon, 
             level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values, 
             champ_level = champlevel, champ_pts = champpoints) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
             return render_template('notFound.html')
             #return render_template('notFound.html')
-    else:
-        return render_template('index.html') 
-
-@app.route('/summoner/<string:name>', methods=['GET', 'POST'])
-def summoner(sN, pi, ii, lev, tb, title):
-    return render_template('summoner.html', profile_img = pi, item0_img = ii,  name = sN, level = lev, tables= tb, titles= title) #pass profile_img as variable for
+    return render_template('summoner.html')
     
  
 #error Page

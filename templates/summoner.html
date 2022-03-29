@@ -1,18 +1,27 @@
-{% extends 'summonerbase2.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/summonerbase2.css') }}">
 
-{% block head %}
+
 <title>Rift Tracker</title>
-{% endblock %}
 
-{% block body %}
+</head>
+<body>
+
 <body class = bg>
-    <div class= webpage>   
+    <div class= webpage> 
+      <form action="{{ url_for('summoner/<string:name>') }}">  
         <link rel="stylesheet" href="{{ url_for('static', filename='css/summoner.css') }}">
         <div>
             <img class = iconStyle src="{{profile_img}}">
             <h1 class = nameStyle >{{name}}</h1>
             <h1 class = levelStyle>{{level}}</h1>
         </div>
+      </form>
     </div>
     <div class="dropdown">
         <button onclick="myFunction()" class="dropbtn">Full Match Stats</button>
@@ -22,6 +31,7 @@
                         {{ table|safe }}</a>
         </div>
     </div>
+    
     <script>
         /* When the user clicks on the button, 
         toggle between hiding and showing the dropdown content */
@@ -45,4 +55,6 @@
         </script>
 {% endfor %}
 </body>
-{% endblock %}
+
+</body>
+</html>

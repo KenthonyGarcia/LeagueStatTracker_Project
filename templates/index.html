@@ -31,8 +31,8 @@
                     <div class="form">
                         <div id = "inputWrapper">
                             <form action="/" method="POST" autocomplete="off">
-                                <input class= searchName type="text" placeholder="Summoner..." name="SummonerName">
-                                <button class = buttonSearch type="submit"><img src="{{url_for('static', filename='search_icon.png')}}" width = "15"/></button>
+                                <input class= searchName type="text" placeholder="Summoner..." name="SummonerName" id="SummonerName">
+                                <a class = buttonSearch href='/summoner/{{name}}'><img src="{{url_for('static', filename='search_icon.png')}}" width = "15"/></a></p>
                               </form>
                         </div>
                     </div>

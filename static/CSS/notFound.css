@@ -1,5 +1,6 @@
 .bg{
-    background-color: black;
+    background-image: url(/static/notfound.jpg);
+    background-size: cover;
 }
 
 .mumuLogo{

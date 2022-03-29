@@ -1,25 +1,27 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+    <div class = 'bg'>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/notfound.css') }}">
+            <title>Rift Tracker</title>
+        </head>
+        <body>
+            <body class = bg>
+                <div class="content">   
+                    <h1 class = "errorText">User not found, try again!</h1>
+                    <h3 class = "bottomText">Please make sure you typed a known username and try again!</h3>
+                    <div class="form">
+                        <form action="/" method="POST" autocomplete="off">
+                            <input class = searchName name="content" id="content">
+                            <input class = homeButton type="submit" value="TRY AGAIN">
+                        </form>
+                    </div>
+                </div>
+            </body>
+        </body>
+    </html>
+</div>    
 
-{% block head %} 
-<title>Rift Tracker</title>
-{% endblock %}
-
-{% block body %}
-<body class = bg>
-    <div class="content">   
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/notFound.css') }}">
-        <h1 class = "errorText">User not found, try again!</h1>
-        <h3 class = "bottomText">Please make sure you typed a known username and try again!</h3>
-        <div class="form">
-            <form action="/" method="POST" autocomplete="off">
-                <input class = searchName name="content" id="content">
-                <input class = homeButton type="submit" value="TRY AGAIN">
-            </form>
-        </div>
-        
-        <img class = mumuLogo src="{{url_for('static', filename='sadMumu.jpg')}}"/>
-    </div>
-</body>
-
-
-{% endblock %}
