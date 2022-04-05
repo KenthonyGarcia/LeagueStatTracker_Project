@@ -2,7 +2,7 @@
     padding: 5px 120px;
     width: 150px;
     height: 70px;
-    background-color: #1565b3;
+    background-color: #1564b352;
 }
 
 .border{
@@ -12,9 +12,9 @@
     padding-bottom: 110px;
     width: 400px;
     height: 450px;
-    border: 1px solid #236B8E;
+    border: 1px solid #236a8e52;
     border-radius: 0px;
-    background-color: #e0dddd;
+    background-color: #0000002a;
 }
 
 .border2{
@@ -24,13 +24,13 @@
     padding-bottom: 100px;
     width: 400px;
     height: 350px;
-    border: 1px solid #236B8E;
+    border: 1px solid rgb(35, 104, 138);
     border-radius: 0px;
-    background-color: #e0dddd;
+    background-color: #72727281;
 }
 
 .title-text{
-    color: #236B8E; 
+    color: #236a8e91; 
     font-style: oblique;
     font-weight: bold;
     font-size: 50px;
@@ -45,8 +45,8 @@
 
 .btn {
     padding: 10px 40px;
-    background-color: #7FE960; 
-    color: #FFFFFF;
+    background-color: #80e96081; 
+    color: #000000;
     font-style: oblique;
     font-weight: bold;
     border-radius: 10px;
@@ -61,7 +61,7 @@
 
 .textbox{
     padding: 10px 40px;
-    background-color: #1B82E6; 
+    background-color: #1b80e69d; 
     color: white;
     border-radius: 10px;
 }
@@ -93,6 +93,10 @@
 
 .bg-register{
     background-image: url(/static/register.jpg);
+    background-size: cover;
+}
+.bg-profile{
+    background-image: url(/static/profile.webm);
     background-size: cover;
 }
 
