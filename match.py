@@ -155,6 +155,7 @@ def Main():
             seconds = gametime%60
             match_time = str(mintues)+"m"+str(seconds)+'s'
             
+            
             #creating lists of image paths for items and champions
             championdf= []
             for i in df['Champion Name']:
