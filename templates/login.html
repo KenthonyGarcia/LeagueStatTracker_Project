@@ -21,21 +21,24 @@
                 <form action="{{ url_for('login') }}" method="post">
                   <div class="msg">{{ msg }}</div>
                   <div class = "form">
-                    <input id="email" name="email" type="text" class="textbox" autocomplete="off"/>
+                    <input id="email" name="email" type="text" class="textbox" autocomplete="off" required/>
                     <label for = "name" class = "label-name">
                       <span class = "content-name4">Email </span>
                     </label>
                   </div>
                   </br></br>
                   <div class = "form">
-                    <input id="password" name="password" type="password" class="textbox" autocomplete="off"/>
+                    <input id="password" name="password" type="password" class="textbox" autocomplete="off" required/>
                     <label for = "name" class = "label-name">
                       <span class = "content-name">Password</span>
                     </label>
                   </div>
                   <br><br>
                   <div class = "form">
-                    <input id="otp_code" name="otp_code" type="text" placeholder="Authentication Code" class="textbox" autocomplete="off"/>
+                    <input id="otp_code" name="otp_code" type="text" class="textbox" autocomplete="off" required/>
+                    <label for = "name" class = "label-name">
+                      <span class = "content-name3">Authentication Code</span>
+                    </label>
                   </div>
                   </br></br></br>
                   <input type="submit" class="btn" value="Sign In"></br></br>

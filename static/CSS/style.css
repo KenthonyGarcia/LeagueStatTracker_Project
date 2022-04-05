@@ -139,11 +139,8 @@
 .form label::after{
     content: "";
     position: absolute;
-    left: 0%;
-    bottom: -1px;
     height: 100%;
     width: 100%;
-    transform: translateX(-100%);
 }
 
 .content-name{
@@ -174,22 +171,22 @@
     transition: all 0.3s ease;
 }
 
-.form input:focus + .label-name .content-name{
+.form input:focus + .label-name .content-name, .form input:valid + .label-name .content-name{
     transform: translateY(-150%);
     font-size: 20px;
 }
 
-.form input:focus + .label-name .content-name2{
+.form input:focus + .label-name .content-name2, .form input:valid + .label-name .content-name2{
     transform: translateY(-150%);
     font-size: 20px;
 }
 
-.form input:focus + .label-name .content-name3{
+.form input:focus + .label-name .content-name3, .form input:valid + .label-name .content-name3{
     transform: translateY(-150%);
     font-size: 20px;
 }
 
-.form input:focus + .label-name .content-name4{
+.form input:focus + .label-name .content-name4, .form input:valid + .label-name .content-name4{
     transform: translateY(-150%);
     font-size: 20px;
 }

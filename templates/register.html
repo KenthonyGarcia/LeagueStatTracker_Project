@@ -15,28 +15,28 @@
                 <form action="{{ url_for('register') }}" method="post">
                   <div class="msg">{{ msg }}</div>
                   <div class = "form">
-                    <input id="username" name="username" type="text" class="textbox" autocomplete="off"/>
+                    <input id="username" name="username" type="text" class="textbox" autocomplete="off" required/>
                     <label for = "name" class = "label-name">
                       <span class = "content-name">Username</span>
                     </label>
                   </div>
                     </br></br>
                     <div class = "form">
-                      <input id="SummonerName" name="SummonerName" type="text"  class="textbox" autocomplete="off"/>
+                      <input id="SummonerName" name="SummonerName" type="text"  class="textbox" autocomplete="off" required/>
                       <label for = "SummonerName" class = "label-name">
                         <span class = "content-name2">Summoner Name</span>
                       </label>
                     </div>
                     </br></br>
                     <div class = "form">
-                      <input id="password" name="password" type="password" class="textbox" autocomplete="off"/>
+                      <input id="password" name="password" type="password" class="textbox" autocomplete="off" required/>
                       <label for = "name" class = "label-name">
                         <span class = "content-name">Password</span>
                       </label>
                     </div>
                     </br></br>
                     <div class = "form">
-                      <input id="email" name="email" type="text" class="textbox" autocomplete="off"/>
+                      <input id="email" name="email" type="text" class="textbox" autocomplete="off" required/>
                       <label for = "SummonerName" class = "label-name">
                         <span class = "content-name3">Valid Email-Address</span>
                       </label>
