@@ -1,9 +1,16 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	box-sizing: border-box;
+}
+
+
 .TitleName{
     color: #AB8D34;
     font-size:80px;
     text-align: center
 }
-
 .buttonLogin{
     background-color: #90EE90 ;
     border-color: black;
@@ -18,7 +25,6 @@
     margin: 4px 2px;
     float: right;
 }
-
 .buttonRegister{
     background-color: #236B8E;;
     border-color: black;
@@ -34,37 +40,31 @@
     float: right;
     width: 130px;
 }
-
 .textLogin{
     color: #236B8E;
     font-weight: bold;
     font-size: 15px;
 }
-
 .textRegister{
     color: #AB8D34;
     font-weight: bold;
     font-size: 13px;
     text-align: center;
 }
-
-
-
 .searchName{
     padding: 10px 50px;
     font-size: 17px;
-    border: 1px solid grey;
+    border: 1px solid rgb(114, 114, 114);
     width: 50%;
-    background: #f1f1f1;
+    background: #2292dd9c;
     display: inline-block;
     cursor: pointer;
     text-align: center;
 }
-
 .buttonSearch{
-    background-color: #AB8D34;
-    border-color: black;
-    color: white;
+    background-color: #2292dd9c;
+    border: rgb(114, 114, 114);
+    color: rgb(0, 0, 0);
     padding: 10px 16px;
     text-align: center;
     cursor: pointer;
@@ -73,18 +73,15 @@
     font-size: 16px;
     width: 15%;
 }
-
 .buttonSearch:hover{
     background-color: #EECD49;
 }
-
 div.overlay {
     opacity: .9;
     background-color: black;
     position: absolute;
     left: 0; top: 0; height: 256px; width: 256px;
 }
-
 .layer {
     box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
     position: absolute;
@@ -93,7 +90,6 @@ div.overlay {
     width: 100%;
     height: 100%;
 }
-
 body, html {
     margin: 0;
     font-family: sans-serif;
@@ -102,22 +98,67 @@ body, html {
     background-image: url(/static/main.webm);
     background-size: cover;
 }
-
 .content {
     margin: 0 auto;
     width: 400px;
 }
-
 .form {
     margin-top: 20px;
 }
-
-
 #bgVideo {
     position: fixed;
     z-index: -1;
+    filter: brightness(40%);
     right: 0;
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
+}
+.box{
+	width: 500px;
+	height: 50px;
+	background-color: rgba(18, 146, 231, 0.726);
+	border-radius: 30px;
+	display: flex;
+	align-items: center;
+	padding: 20px;
+}
+
+.box > i {
+	font-size: 20px;
+    cursor: pointer;
+	color: rgb(255, 255, 255);
+}
+
+.box > input{
+	flex: 1;
+	height: 40px;
+	border: none;
+    background-color: rgba(18, 146, 231, 0);
+	outline: none;
+	font-size: 18px;
+	padding-left: 10px;
+}
+
+.box > select{
+    background-color: rgba(18, 146, 231, 0);
+    outline: none;
+    font-size: 18px;
+	height: 40px;
+	border: none;
+}
+.box > button{
+    background-color: rgba(255, 255, 255, 0);
+    outline: none;
+    cursor: pointer;
+    font-size: 18px;
+	height: 40px;
+	border: none;
+}
+input::placeholder{
+    color: rgb(7, 7, 7);
   }
+
+.button:hover {
+    color: #fff
+}

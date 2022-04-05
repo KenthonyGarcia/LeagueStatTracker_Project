@@ -6,6 +6,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+            <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
             
             {% block head %}
             <title>Rift Tracker</title>
@@ -29,19 +30,36 @@
                 <div class="content" position: relative> 
                     <h1 class = "TitleName">RiftTracker</h1>
                     <div class="form">
-                        <div id = "inputWrapper">
-                            <form action="/" method="POST" autocomplete="off">
-                                <input class= searchName type="text" placeholder="Summoner..." name="SummonerName">
-                                <button class = buttonSearch type="submit" ><img src="{{url_for('static', filename='search_icon.png')}}" width = "15"/></button>
-                              </form>
-                        </div>
+                        <form action="/" method="POST" autocomplete="off">
+                            <div class = 'box'>
+                            <input type="text" placeholder="Search Summoner" name="SummonerName" required/>
+                            <select name="region" id="region">
+                                <option value="NA1">NA1</option>
+                                <option value="EUW1">EUW1</option>
+                                <option value="EUN1">EUN1</option>
+                                <option value="BR1">BR1</option>
+                                <option value="LA1">LA1</option>
+                                <option value="LA2">LA2</option>
+                                <option value="OCE">OCE</option>
+                                <option value="RU1">RU1</option>
+                                <option value="TR1">TR1</option>
+                                <option value="JP1">JP1</option>
+                                <option value="KR">KR</option>
+                            </select>
+                            <button type="submit">
+                            <i class="fa fa-search" aria-hidden="true" type="submit" ></i>
+                            </button>
+                            </div>
+                        </form>
                     </div>
             
                 </div>
             </div>
             </body>
             {% endblock %}
+            
         </body>
     </html>
-</div>    
+    
+</div>
 

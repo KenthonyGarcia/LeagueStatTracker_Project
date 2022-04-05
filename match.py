@@ -11,6 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from boto3.dynamodb.conditions import Key, Attr
 from flask_mysqldb import MySQL
 from PIL import Image
+from config import api_key, aws_access_key_id, aws_secret_access_key
 import MySQLdb.cursors
 import boto3
 import pyotp
@@ -33,14 +34,14 @@ app = Flask(__name__)
 
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-api_key = ''#Remember to remove the API key before pushing.
+#Remember to remove the API key before pushing.
 #Remember to remove the API key before pushing code to github repository.
 
 
 watcher = LolWatcher(api_key)
 
 mysql = MySQL(app)
-dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id ='', aws_secret_access_key = '')
+dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id = aws_access_key_id , aws_secret_access_key = aws_secret_access_key)
 
 #----dropdown for regions
 #@app.route('/', methods = ['GET'])
@@ -118,6 +119,7 @@ def Main():
                 participants_row['Game Duration'] = match_detail['info']['gameDuration']
                 participants.append(participants_row)
             df = pd.DataFrame(participants)
+            
             challenges = []
             for row in match_detail['info']['participants']:
                 challenges_row = {}
@@ -125,12 +127,13 @@ def Main():
                 challenges.append(challenges_row)
             challengesdf = pd.DataFrame(challenges)
 
-            challenges = []
+            challengeslist = []
             for row in challengesdf['challenges']:
-                challenges_row = {}
-                challenges_row['killParticipation'] = row['killParticipation']
-                challenges.append(challenges_row)
-            challengeslistdf = pd.DataFrame(challenges)
+                challengeslist_row = {}
+                challengeslist_row['kda'] = row['kda']
+                challengeslist_row['killParticipation'] = row['killParticipation']
+                challengeslist.append(challengeslist_row)
+            challengeslistdf = pd.DataFrame(challengeslist)
             
             #turning the dataframe columns to a list for frontend use.
             summonerName = df['Summoner Name'].to_list() #Creates a list for each dataframe column making it easier for frontend to use the values of the variables.
@@ -139,18 +142,18 @@ def Main():
             deaths = df['Deaths'].to_list()
             assists = df['Assists'].to_list()
             killParticipation = challengeslistdf['killParticipation'].to_list()
+            kda = challengeslistdf['kda'].to_list()
             visionScore = df['Vision Score'].to_list()
             goldEarned = df['Gold Earned'].to_list()
             creepScore = df['Minions Killed'].to_list()
             win = df['Win'].to_list()
             gameDuration = df['Game Duration'].to_list()
             
-            #KDA Calculation
-            KA =[i + j for i, j in zip(kills, assists)]
-            KDA_raw =[i / j for i, j in zip(KA, deaths)]
-            KDA_rounded = [round(num, 2) for num in KDA_raw]
-            
             #GameDuration conversion
+            gametime = (gameDuration[0])#only need
+            mintues = int(gametime/60)
+            seconds = gametime%60
+            match_time = str(mintues)+"m"+str(seconds)+'s'
             
             #creating lists of image paths for items and champions
             championdf= []
@@ -229,21 +232,21 @@ def Main():
             
 
             #-----------------------------------------
-
+            regions = ['NA1', 'EUW1', 'EUN1', 'BR1', 'LA1', 'LA2', 'OCE', 'RU1', 'TR1', 'JP1', 'KR'] #region codes
             name = str(nameid)
             sumonnerLevel = str(Levelid)
             profile_icon_id = str(imgid) +'.png'
             profileicon_file_path = 'https://league-img.s3.amazonaws.com/img/profileicon/' + profile_icon_id
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
-            return render_template('summoner.html',test = top_champ_mastery, sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, KDA = KDA_rounded, kP = killParticipation, vS =  visionScore, 
+            return render_template('summoner.html',test = top_champ_mastery, sN = summonerName, iP = indPosition, K = kills, D = deaths, A = assists, kP = killParticipation, vS =  visionScore, 
             gE = goldEarned, cS = creepScore, W = win, gD = gameDuration,profile_img = profileicon_file_path, item0_img = Item0icon, 
             item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, 
-            item6_img = Item6icon, champion_img = championicon, name = name, 
+            item6_img = Item6icon, champion_img = championicon, name = name, region = regions, mT=match_time, KDA = kda,
             level = sumonnerLevel, tables=[df.to_html(escape=False,classes='data')], titles=df.columns.values, 
             champ_level = champlevel, champ_pts = champpoints) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except:
-            return render_template('notFound.html')
+            return redirect(url_for('error'))
             #return render_template('notFound.html')
     else:
         return render_template('index.html') 
@@ -278,11 +281,18 @@ def login():
         if password == items[0]['password']:
             if otp_gen.now() == code:
                 msg = 'Logged in successfully!'
-                return render_template('profile.html', msg = msg, username = username)
+                return redirect(url_for('profile', msg = msg, username = username))
             elif otp_gen.now() != code:
                 msg = 'Incorrect Authentication Code try again'
                 return render_template('login.html', msg = msg)
     return render_template('login.html', msg = msg)
+
+#profile Page
+@app.route('/profile', methods =['GET', 'POST'])
+def profile():
+    username = request.args.get('username', None)
+    return render_template('profile.html', username = username)
+    
 
 @app.route('/logout')
 def logout():
@@ -301,10 +311,7 @@ def register():
         password = request.form['password']
         table = dynamodb.Table('users')
         #Google Authenticator QrCode generator
-        sec_key = pyotp.random_base32()
-        otp_gen = pyotp.TOTP(sec_key)
-        auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
-        qrimg0 = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=' + auth_str
+        sec_key = pyotp.random_base32() 
         table.put_item(
             Item={
                 'username': username,
@@ -315,7 +322,7 @@ def register():
             }   
         )
         msg = 'You have successfully registered, please scan the qrcode'
-        return redirect(url_for('authentication', msg = msg, email = email, qrimg = qrimg0))
+        return redirect(url_for('authentication', msg = msg, email = email))
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('register.html', msg = msg)
