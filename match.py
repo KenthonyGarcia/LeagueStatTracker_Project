@@ -22,6 +22,7 @@ import pandas as pd
 import os
 import pyotp
 import sys
+from flask_cors import CORS
 
 
 
@@ -29,8 +30,14 @@ import sys
 #ITEM_FOLDER = os.path.join('static', 'img', 'item')
 
 app = Flask(__name__)
+CORS(app)
 
 
+
+
+# global variables/ ALSO REMOVE API KEY BEFORE PUSHING
+#Remember to remove the API key before pushing.
+#Remember to remove the API key before pushing code to github repository.
 
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
