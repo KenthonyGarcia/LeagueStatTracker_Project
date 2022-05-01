@@ -342,12 +342,29 @@ def Main():
             df_complete['item6'] = item6df
             Item6icon = df_complete['item6'].to_list() 
             """
+            
             #Reading the file from s3------------------------------------
+            """
             df_obj = s3.get_object(Bucket="league-img", Key="match_history/"+nameid+"_Match"+str(0)+".csv")
             df_body = df_obj['Body']
             csv_string = df_body.read().decode('utf-8')
             s3_df = pd.read_csv(StringIO(csv_string))
-            print(s3_df)
+            title=s3_df.columns.values
+            match0 =[s3_df.to_html(escape=False,classes='data')]
+            #Taking matches from s3 and turning them into variables----------------------------------------------------------------
+            """
+            table=[]
+            for i in range(20):
+                df_obj = s3.get_object(Bucket="league-img", Key="match_history/"+nameid+"_Match"+str(i)+".csv")
+                df_body = df_obj['Body']
+                csv_string = df_body.read().decode('utf-8')
+                s3_df = pd.read_csv(StringIO(csv_string))
+                title=s3_df.columns.values   
+                tables=[s3_df.to_html(escape=False,classes='data')]
+                table.append(tables)
+                
+            match0,match1,match2,match3,match4,match5,match6,match7,match8,match9,match10,match11,match12,match13,match14,match15,match16,match17,match18,match19= [e for e in table]
+            
             #Player top mastery champs----------------
             top_champ_mastery = watcher.champion_mastery.by_summoner('NA1', summonerdict['id'])
 
@@ -375,10 +392,12 @@ def Main():
             return render_template('summoner.html',test = top_champ_mastery,profile_img = profileicon_file_path, item0_img = Item0icon, 
             item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, 
             item6_img = Item6icon, champion_img = championicon, name = name, region = regions,
-            level = sumonnerLevel, tables=[s3_df.to_html(escape=False,classes='data')], titles=s3_df.columns.values, 
+            level = sumonnerLevel, tables0 = match0,tables1 = match1,tables2 =match2,tables3 =match3,tables4 =match4,tables5 =match5,tables6 =match6,
+            tables7 =match7,tables8 =match8,tables9 =match9,tables10 =match10,tables11 =match11,tables12 =match12,tables13 =match13,tables14 =match14,
+            tables15 =match15,tables16 =match16,tables17 =match17,tables18 =match18,tables19 =match19, titles =title, 
             champ_level = champlevel, champ_pts = champpoints) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
-        except:
+        except: 
             return redirect(url_for('error'))
             #return render_template('notFound.html')
     else:
@@ -409,12 +428,12 @@ def login():
         items = response['Items']
         sec_key = items[0]['sec_key']
         otp_gen = pyotp.TOTP(sec_key)
-        
+        summonername = items[0]['SummonerName']
         username = items[0]['username']
         if password == items[0]['password']:
             if otp_gen.now() == code:
                 msg = 'Logged in successfully!'
-                return redirect(url_for('profile', msg = msg, username = username))
+                return redirect(url_for('profile', msg = msg, username = username, summonername = summonername))
             elif otp_gen.now() != code:
                 msg = 'Incorrect Authentication Code try again'
                 return render_template('login.html', msg = msg)
@@ -424,7 +443,12 @@ def login():
 @app.route('/profile', methods =['GET', 'POST'])
 def profile():
     username = request.args.get('username', None)
-    return render_template('profile.html', username = username)
+    summonername = request.args.get('SummonerName', None)
+    df_obj = s3.get_object(Bucket="league-img", Key="match_history/"+summonername+"_Match"+str(0)+".csv")
+    df_body = df_obj['Body']
+    csv_string = df_body.read().decode('utf-8')
+    s3_df = pd.read_csv(StringIO(csv_string))
+    return render_template('profile.html', username = username, summonername = summonername, tables=[s3_df.to_html(escape=False,classes='data')], titles=s3_df.columns.values)
     
 
 @app.route('/logout')

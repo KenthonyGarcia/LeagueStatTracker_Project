@@ -1,5 +1,8 @@
 import React from 'react';
 import './App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons'
 import video from "./main.webm";
 import {useNavigate} from "react-router-dom";
 import Login from './login';
@@ -7,23 +10,17 @@ import Login from './login';
 function home(){
     return(
             <body class = 'layer'>
-                <video loop autoPlay
+                <div class = 'layer'>
+                <video autoplay muted loop id = "bgVideo"
                 style = {{
-                position: "absolute",
-                width: "100%",
-                left: "50%",
-                top: "50%",
-                height: "100%",
-                objectFit: "cover",
-                transform: "translate(-50%, -50%)",
-                zIndex: "-1"
             }}
             >
-                <source src={video} type="video/mp4"/>
-            </video>
-                <button 
+                <source src="https://league-img.s3.amazonaws.com/frontend/main.webm" type="video/mp4"/>
+                </video>
+                </div>
+                <button  type="submit"
                     onClick ={() => {
-                    useNavigate('/login')
+                    useNavigate(Login)
                     }}
                 class = "buttonLogin4"
                 >
@@ -53,7 +50,7 @@ function home(){
                                     <option value="KR">KR</option>
                                 </select>
                                 <button type="submit">
-                                <i class="fa fa-search" aria-hidden="true" type="submit" ></i>
+                                <FontAwesomeIcon class="fa fa-search" aria-hidden="true" type="submit"/>
                                 </button>
                                 </div>
                             </form>

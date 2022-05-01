@@ -22,13 +22,16 @@
         </div>
     </div>
     <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Full Match Stats</button>
+        <button onclick="myFunction()" class="dropbtn">Match 1 Stats</button>
         <div id="myDropdown" class="dropdown-content">
-          <a href="Match 1">{% for table in tables %}
+          <a href="Match 1">{% for table in tables0 %}
                         {{titles[loop.index]}}
-                        {{ table|safe }}</a>
+                        {{ table|safe }}</a>              
         </div>
-    </div>
+    
+    
+      
+  </div>
     <script class = "bg">
         /* When the user clicks on the button, 
         toggle between hiding and showing the dropdown content */
