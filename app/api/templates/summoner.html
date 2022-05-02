@@ -26,19 +26,143 @@
         <div id="myDropdown" class="dropdown-content">
           <a href="Match 1">{% for table in tables0 %}
                         {{titles[loop.index]}}
-                        {{ table|safe }}</a>              
-        </div>
-    
-    
-      
-  </div>
+                        {{ table|safe }}</a>
+                        {% endfor %}        
+        </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction1()" class="dropbtn">Match 2 Stats</button>
+      <div id="myDropdown1" class="dropdown-content">
+        <a href="Match 2">{% for table in tables1 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction2()" class="dropbtn">Match 3 Stats</button>
+      <div id="myDropdown2" class="dropdown-content">
+        <a href="Match 3">{% for table in tables2 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction3()" class="dropbtn">Match 4 Stats</button>
+      <div id="myDropdown3" class="dropdown-content">
+        <a href="Match 4">{% for table in tables3 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction4()" class="dropbtn">Match 5 Stats</button>
+      <div id="myDropdown4" class="dropdown-content">
+        <a href="Match 5">{% for table in tables4 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction5()" class="dropbtn">Match 6 Stats</button>
+      <div id="myDropdown5" class="dropdown-content">
+        <a href="Match 6">{% for table in tables5 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction6()" class="dropbtn">Match 7 Stats</button>
+      <div id="myDropdown6" class="dropdown-content">
+        <a href="Match 7">{% for table in tables6 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction7()" class="dropbtn">Match 8 Stats</button>
+      <div id="myDropdown7" class="dropdown-content">
+        <a href="Match 8">{% for table in tables7 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction8()" class="dropbtn">Match 9 Stats</button>
+      <div id="myDropdown8" class="dropdown-content">
+        <a href="Match 9">{% for table in tables8 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
+    <br>
+    <br>
+    <div class="dropdown">
+      <button onclick="myFunction9()" class="dropbtn">Match 10 Stats</button>
+      <div id="myDropdown9" class="dropdown-content">
+        <a href="Match 10">{% for table in tables9 %}
+                      {{titles[loop.index]}}
+                      {{ table|safe }}</a>
+                      {% endfor %}        
+      </div> 
+    </div>
     <script class = "bg">
         /* When the user clicks on the button, 
         toggle between hiding and showing the dropdown content */
         function myFunction() {
           document.getElementById("myDropdown").classList.toggle("show");
         }
-        
+        function myFunction1() {
+          document.getElementById("myDropdown1").classList.toggle("show");
+        }
+        function myFunction2() {
+          document.getElementById("myDropdown2").classList.toggle("show");
+        }
+        function myFunction3() {
+          document.getElementById("myDropdown3").classList.toggle("show");
+        }
+        function myFunction4() {
+          document.getElementById("myDropdow4").classList.toggle("show");
+        }
+        function myFunction5() {
+          document.getElementById("myDropdown5").classList.toggle("show");
+        }
+        function myFunction6() {
+          document.getElementById("myDropdown6").classList.toggle("show");
+        }
+        function myFunction7() {
+          document.getElementById("myDropdown7").classList.toggle("show");
+        }
+        function myFunction8() {
+          document.getElementById("myDropdown8").classList.toggle("show");
+        }
+        function myFunction9() {
+          document.getElementById("myDropdown9").classList.toggle("show");
+        }
+
         // Close the dropdown if the user clicks outside of it
         window.onclick = function(event) {
           if (!event.target.matches('.dropbtn')) {
@@ -52,8 +176,8 @@
             }
           }
         }
-        </script>
-{% endfor %}
+      </script>
+    </div>
 </body>
 {% endblock %}
 </body>
