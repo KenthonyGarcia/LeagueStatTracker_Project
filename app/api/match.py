@@ -41,12 +41,6 @@ CORS(app)
 #Remember to remove the API key before pushing.
 #Remember to remove the API key before pushing code to github repository.
 
-
-# global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-#Remember to remove the API key before pushing.
-#Remember to remove the API key before pushing code to github repository.
-
-
 watcher = LolWatcher(api_key)
 
 mysql = MySQL(app)
@@ -110,156 +104,114 @@ def Main():
                 match_detail = watcher.match.by_id(match_region, last_match[i])
                 fulllist.append(match_detail)
                 i+=1
-
-            """
-            participants = []
-            for row in match_detail['info']['participants']:
-                participants_row = {}
-                participants_row['Summoner Name'] = row['summonerName']
-                participants_row['Position'] = row['individualPosition']
-                participants_row['Champion Name'] = row['championName']
-                participants_row['Champion Level'] = row['champLevel']
-                participants_row['Kills'] = row['kills']
-                participants_row['Deaths'] = row['deaths']
-                participants_row['Assists'] = row['assists']
-                participants_row['Vision Score'] = row['visionScore']
-                participants_row['Gold Earned'] = row['goldEarned']
-                participants_row['Minions Killed'] = row['totalMinionsKilled']
-                participants_row['item0'] = row['item0']
-                participants_row['item1'] = row['item1']
-                participants_row['item2'] = row['item2']
-                participants_row['item3'] = row['item3']
-                participants_row['item4'] = row['item4']
-                participants_row['item5'] = row['item5']
-                participants_row['item6'] = row['item6']
-                participants_row['Win'] = row['win']
-                participants_row['Game Duration'] = match_detail['info']['gameDuration']
-                participants.append(participants_row)
-            df = pd.DataFrame(participants)
-            
-            challenges = []
-            for row in match_detail['info']['participants']:
-                challenges_row = {}
-                challenges_row['challenges'] = row['challenges']
-                challenges.append(challenges_row)
-            challengesdf = pd.DataFrame(challenges)
-
-            challengeslist = []
-            for row in challengesdf['challenges']:
-                challengeslist_row = {}
-                challengeslist_row['kda'] = row['kda']
-                challengeslist_row['killParticipation'] = row['killParticipation']
-                challengeslist.append(challengeslist_row)
-            challengeslistdf = pd.DataFrame(challengeslist)
-            df_complete = pd.concat([df, challengeslistdf], axis = 1)
-            """
             
             j = 0
-
-            for i in range(len(fulllist)):
+            k=0
+            for k in range(len(fulllist)):
                 participants = []
-                for row in fulllist[j]['info']['participants']:
-                    participants_row = {}
-                    participants_row['Summoner Name'] = row['summonerName']
-                    participants_row['Position'] = row['individualPosition']
-                    participants_row['Champion Name'] = row['championName']
-                    participants_row['Champion Level'] = row['champLevel']
-                    participants_row['Kills'] = row['kills']
-                    participants_row['Deaths'] = row['deaths']
-                    participants_row['Assists'] = row['assists']
-                    participants_row['Vision Score'] = row['visionScore']
-                    participants_row['Gold Earned'] = row['goldEarned']
-                    participants_row['Minions Killed'] = row['totalMinionsKilled']
-                    participants_row['item0'] = row['item0']
-                    participants_row['item1'] = row['item1']
-                    participants_row['item2'] = row['item2']
-                    participants_row['item3'] = row['item3']
-                    participants_row['item4'] = row['item4']
-                    participants_row['item5'] = row['item5']
-                    participants_row['item6'] = row['item6']
-                    participants_row['Win'] = row['win']
-                    #participants_row['gameDuration'] = fulllist['info']['gameDuration']
-                    participants.append(participants_row)
-                challenges = []
-                for row in fulllist[j]['info']['participants']:
-                    challenges_row = {}
-                    challenges_row['challenges'] = row['challenges']
-                    challenges.append(challenges_row)
-                challengesdf = pd.DataFrame(challenges)
+                if fulllist[k]['info']['gameMode'] == ("CLASSIC") or ("ARAM"):
+                    for row in fulllist[j]['info']['participants']:
+                        participants_row = {}
+                        participants_row['Summoner Name'] = row['summonerName']
+                        participants_row['Position'] = row['individualPosition']
+                        participants_row['Champion Name'] = row['championName']
+                        participants_row['Champion Level'] = row['champLevel']
+                        participants_row['Kills'] = row['kills']
+                        participants_row['Deaths'] = row['deaths']
+                        participants_row['Assists'] = row['assists']
+                        participants_row['Vision Score'] = row['visionScore']
+                        participants_row['Gold Earned'] = row['goldEarned']
+                        participants_row['Minions Killed'] = row['totalMinionsKilled']
+                        participants_row['item0'] = row['item0']
+                        participants_row['item1'] = row['item1']
+                        participants_row['item2'] = row['item2']
+                        participants_row['item3'] = row['item3']
+                        participants_row['item4'] = row['item4']
+                        participants_row['item5'] = row['item5']
+                        participants_row['item6'] = row['item6']
+                        participants_row['Win'] = row['win']
+                        #participants_row['gameDuration'] = fulllist['info']['gameDuration']
+                        participants.append(participants_row)
+                    challenges = []
+                    for row in fulllist[j]['info']['participants']:
+                        challenges_row = {}
+                        challenges_row['challenges'] = row['challenges']
+                        challenges.append(challenges_row)
+                    challengesdf = pd.DataFrame(challenges)
 
-                challengeslist = []
-                for row in challengesdf['challenges']:
-                    challengeslist_row = {}
-                    challengeslist_row['kda'] = row['kda']
-                    challengeslist_row['killParticipation'] = row['killParticipation']
-                    challengeslist.append(challengeslist_row)
-                challengeslistdf = pd.DataFrame(challengeslist)
-                df = pd.DataFrame(participants)
-                df_complete = pd.concat([df, challengeslistdf], axis = 1)
-                championdf= []
-                for i in df_complete['Champion Name']:
-                    champion = str(i) +'.png'
-                    champion_file_path = 'https://league-img.s3.amazonaws.com/img/champion/' + champion
-                    championdf.append(path_to_image_html(champion_file_path))#appends the paths to a new dataframe
-                df_complete['Champion Name'] = championdf
-                championicon = df_complete['Champion Name'].to_list() #makes a list of paths for the champion images
-                item0df= []
-                for i in df_complete['item0']:
-                    Item0 = str(i) +'.png'
-                    Item0_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item0
-                    item0df.append(path_to_image_html(Item0_file_path))
-                df_complete['item0'] = item0df
-                Item0icon = df_complete['item0'].to_list()
-                item1df= []
-                for i in df_complete['item1']:
-                    Item1 = str(i) +'.png'
-                    Item1_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item1
-                    item1df.append(path_to_image_html(Item1_file_path))
-                df_complete['item1'] = item1df
-                Item1icon = df_complete['item1'].to_list()
-                item2df= []
-                for i in df_complete['item2']:
-                    Item2 = str(i) +'.png'
-                    Item2_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item2
-                    item2df.append(path_to_image_html(Item2_file_path))
-                df_complete['item2'] = item2df
-                Item2icon = df_complete['item2'].to_list()
-                item3df= []
-                for i in df_complete['item3']:
-                    Item3 = str(i) +'.png'
-                    Item3_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item3
-                    item3df.append(path_to_image_html(Item3_file_path))
-                df_complete['item3'] = item3df
-                Item3icon = df_complete['item3'].to_list()
-                item4df= []
-                for i in df_complete['item4']:
-                    Item4 = str(i) +'.png'
-                    Item4_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item4
-                    item4df.append(path_to_image_html(Item4_file_path))
-                df_complete['item4'] = item4df
-                Item4icon = df_complete['item4'].to_list()
-                item5df= []
-                for i in df_complete['item5']:
-                    Item5 = str(i) +'.png'
-                    Item5_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item5
-                    item5df.append(path_to_image_html(Item5_file_path))
-                df_complete['item5'] = item5df
-                Item5icon = df_complete['item5'].to_list()
-                item6df= []
-                for i in df_complete['item6']:
-                    Item6 = str(i) +'.png'
-                    Item6_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item6
-                    item6df.append(path_to_image_html(Item6_file_path))
-                df_complete['item6'] = item6df
-                Item6icon = df_complete['item6'].to_list()
-                output_csv = nameid+"_Match"+str(j)+".csv"
-                complete_buf = StringIO()
-                df_complete.to_csv(complete_buf, index=False)
-                complete_buf.seek(0)
-                #s3.meta.client.upload_file('match_history'+output_csv, 'league-img', output_csv)
-                s3.put_object(Bucket="league-img", Body=complete_buf.getvalue(), Key="match_history/"+output_csv)
-                j+=1
-            
+                    challengeslist = []
+                    for row in challengesdf['challenges']:
+                        challengeslist_row = {}
+                        challengeslist_row['kda'] = row['kda']
+                        challengeslist_row['killParticipation'] = row['killParticipation']
+                        challengeslist.append(challengeslist_row)
+                    challengeslistdf = pd.DataFrame(challengeslist)
+                    df = pd.DataFrame(participants)
+                    df_complete = pd.concat([df, challengeslistdf], axis = 1)
+                    championdf= []
+                    for i in df_complete['Champion Name']:
+                        champion = str(i) +'.png'
+                        champion_file_path = 'https://league-img.s3.amazonaws.com/img/champion/' + champion
+                        championdf.append(path_to_image_html(champion_file_path))#appends the paths to a new dataframe
+                    df_complete['Champion Name'] = championdf
+                    championicon = df_complete['Champion Name'].to_list() #makes a list of paths for the champion images
+                    item0df= []
+                    for i in df_complete['item0']:
+                        Item0 = str(i) +'.png'
+                        Item0_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item0
+                        item0df.append(path_to_image_html(Item0_file_path))
+                    df_complete['item0'] = item0df
+                    Item0icon = df_complete['item0'].to_list()
+                    item1df= []
+                    for i in df_complete['item1']:
+                        Item1 = str(i) +'.png'
+                        Item1_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item1
+                        item1df.append(path_to_image_html(Item1_file_path))
+                    df_complete['item1'] = item1df
+                    Item1icon = df_complete['item1'].to_list()
+                    item2df= []
+                    for i in df_complete['item2']:
+                        Item2 = str(i) +'.png'
+                        Item2_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item2
+                        item2df.append(path_to_image_html(Item2_file_path))
+                    df_complete['item2'] = item2df
+                    Item2icon = df_complete['item2'].to_list()
+                    item3df= []
+                    for i in df_complete['item3']:
+                        Item3 = str(i) +'.png'
+                        Item3_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item3
+                        item3df.append(path_to_image_html(Item3_file_path))
+                    df_complete['item3'] = item3df
+                    Item3icon = df_complete['item3'].to_list()
+                    item4df= []
+                    for i in df_complete['item4']:
+                        Item4 = str(i) +'.png'
+                        Item4_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item4
+                        item4df.append(path_to_image_html(Item4_file_path))
+                    df_complete['item4'] = item4df
+                    Item4icon = df_complete['item4'].to_list()
+                    item5df= []
+                    for i in df_complete['item5']:
+                        Item5 = str(i) +'.png'
+                        Item5_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item5
+                        item5df.append(path_to_image_html(Item5_file_path))
+                    df_complete['item5'] = item5df
+                    Item5icon = df_complete['item5'].to_list()
+                    item6df= []
+                    for i in df_complete['item6']:
+                        Item6 = str(i) +'.png'
+                        Item6_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item6
+                        item6df.append(path_to_image_html(Item6_file_path))
+                    df_complete['item6'] = item6df
+                    Item6icon = df_complete['item6'].to_list()
+                    output_csv = nameid+"_Match"+str(j)+".csv"
+                    complete_buf = StringIO()
+                    df_complete.to_csv(complete_buf, index=False)
+                    complete_buf.seek(0)
+                    #s3.meta.client.upload_file('match_history'+output_csv, 'league-img', output_csv)
+                    s3.put_object(Bucket="league-img", Body=complete_buf.getvalue(), Key="match_history/"+output_csv)
+                    j+=1
+                
             """
             #turning the dataframe columns to a list for frontend use.
             summonerName = df_complete['Summoner Name'].to_list() #Creates a list for each dataframe column making it easier for frontend to use the values of the variables.
@@ -283,76 +235,10 @@ def Main():
             match_time = str(mintues)+"m"+str(seconds)+'s'
             """
             """
-            #creating lists of image paths for items and champions
-            championdf= []
-            for i in df_complete['Champion Name']:
-                champion = str(i) +'.png'
-                champion_file_path = 'https://league-img.s3.amazonaws.com/img/champion/' + champion
-                championdf.append(path_to_image_html(champion_file_path))#appends the paths to a new dataframe
-            df_complete['Champion Name'] = championdf
-            championicon = df_complete['Champion Name'].to_list() #makes a list of paths for the champion images
             
-            item0df= []
-            for i in df_complete['item0']:
-                Item0 = str(i) +'.png'
-                Item0_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item0
-                item0df.append(path_to_image_html(Item0_file_path))
-            df_complete['item0'] = item0df
-            Item0icon = df_complete['item0'].to_list()
-            item1df= []
-            for i in df_complete['item1']:
-                Item1 = str(i) +'.png'
-                Item1_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item1
-                item1df.append(path_to_image_html(Item1_file_path))
-            df_complete['item1'] = item1df
-            Item1icon = df_complete['item1'].to_list()
-            item2df= []
-            for i in df_complete['item2']:
-                Item2 = str(i) +'.png'
-                Item2_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item2
-                item2df.append(path_to_image_html(Item2_file_path))
-            df_complete['item2'] = item2df
-            Item2icon = df_complete['item2'].to_list()
-            item3df= []
-            for i in df_complete['item3']:
-                Item3 = str(i) +'.png'
-                Item3_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item3
-                item3df.append(path_to_image_html(Item3_file_path))
-            df_complete['item3'] = item3df
-            Item3icon = df_complete['item3'].to_list()
-            item4df= []
-            for i in df_complete['item4']:
-                Item4 = str(i) +'.png'
-                Item4_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item4
-                item4df.append(path_to_image_html(Item4_file_path))
-            df_complete['item4'] = item4df
-            Item4icon = df_complete['item4'].to_list()
-            item5df= []
-            for i in df_complete['item5']:
-                Item5 = str(i) +'.png'
-                Item5_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item5
-                item5df.append(path_to_image_html(Item5_file_path))
-            df_complete['item5'] = item5df
-            Item5icon = df_complete['item5'].to_list()
-            item6df= []
-            for i in df_complete['item6']:
-                Item6 = str(i) +'.png'
-                Item6_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + Item6
-                item6df.append(path_to_image_html(Item6_file_path))
-            df_complete['item6'] = item6df
-            Item6icon = df_complete['item6'].to_list() 
             """
             
             #Reading the file from s3------------------------------------
-            """
-            df_obj = s3.get_object(Bucket="league-img", Key="match_history/"+nameid+"_Match"+str(0)+".csv")
-            df_body = df_obj['Body']
-            csv_string = df_body.read().decode('utf-8')
-            s3_df = pd.read_csv(StringIO(csv_string))
-            title=s3_df.columns.values
-            match0 =[s3_df.to_html(escape=False,classes='data')]
-            #Taking matches from s3 and turning them into variables----------------------------------------------------------------
-            """
             table=[]
             for i in range(20):
                 df_obj = s3.get_object(Bucket="league-img", Key="match_history/"+nameid+"_Match"+str(i)+".csv")
@@ -391,7 +277,7 @@ def Main():
             #return redirect(url_for("summoner", pi = profileicon_file_path, ii = Item0_file_path, username = sumname, lev = sumonnerLevel, tb = [df.to_html(classes='data')], title = df.columns.values ))
             return render_template('summoner.html',test = top_champ_mastery,profile_img = profileicon_file_path, item0_img = Item0icon, 
             item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, 
-            item6_img = Item6icon, champion_img = championicon, name = name, region = regions,
+            item6_img = Item6icon, champion_img = championicon, name = name, region = regions, champid = champid,
             level = sumonnerLevel, tables0 = match0,tables1 = match1,tables2 =match2,tables3 =match3,tables4 =match4,tables5 =match5,tables6 =match6,
             tables7 =match7,tables8 =match8,tables9 =match9,tables10 =match10,tables11 =match11,tables12 =match12,tables13 =match13,tables14 =match14,
             tables15 =match15,tables16 =match16,tables17 =match17,tables18 =match18,tables19 =match19, titles =title, 
