@@ -64,6 +64,8 @@
 	display: flex;
 	align-items: center;
 	padding: 20px;
+    position: absolute;
+    left: 930px;
 }
 
 .box > i {
