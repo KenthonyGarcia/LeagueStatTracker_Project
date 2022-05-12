@@ -12,3 +12,4 @@ Pillow
 flask_cors
 flask python-dotenv
 io
+urllib.request

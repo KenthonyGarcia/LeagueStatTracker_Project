@@ -133,6 +133,9 @@ def Main():
                         participants_row['Win'] = row['win']
                         #participants_row['gameDuration'] = fulllist['info']['gameDuration']
                         participants.append(participants_row)
+                    
+                    
+                    
                     challenges = []
                     for row in fulllist[j]['info']['participants']:
                         challenges_row = {}
@@ -147,8 +150,18 @@ def Main():
                         challengeslist_row['killParticipation'] = row['killParticipation']
                         challengeslist.append(challengeslist_row)
                     challengeslistdf = pd.DataFrame(challengeslist)
+                    challengeslistdf['kda'] = [round(x,2) for x in challengeslistdf['kda']]
+                    challengeslistdf['killParticipation'] = [round(x,2) for x in challengeslistdf['killParticipation']]
                     df = pd.DataFrame(participants)
                     df_complete = pd.concat([df, challengeslistdf], axis = 1)
+                    
+                    df_complete['Position'] = ['Normal' if element == ('Invalid') else element for element in df_complete['Position']]
+                    df_complete['Position'] = ['Top' if element == ('TOP') else element for element in df_complete['Position']]
+                    df_complete['Position'] = ['Mid' if element == ('MIDDLE') else element for element in df_complete['Position']]
+                    df_complete['Position'] = ['Bottom' if element == ('BOTTOM') else element for element in df_complete['Position']]
+                    df_complete['Position'] = ['Jungle' if element == ('JUNGLE') else element for element in df_complete['Position']]
+                    df_complete['Position'] = ['Support' if element == ('UTILITY') else element for element in df_complete['Position']]
+                    
                     championdf= []
                     for i in df_complete['Champion Name']:
                         champion = str(i) +'.png'
@@ -241,17 +254,19 @@ def Main():
             
             #Reading the file from s3------------------------------------
             table=[]
+            snapshot=[]
             for i in range(20):
                 df_obj = s3.get_object(Bucket="league-img", Key="match_history/"+nameid+"_Match"+str(i)+".csv")
                 df_body = df_obj['Body']
                 csv_string = df_body.read().decode('utf-8')
                 s3_df = pd.read_csv(StringIO(csv_string))
+                snapshot.append(s3_df.loc[s3_df['Summoner Name'] == nameid])
                 title=s3_df.columns.values   
                 tables=[s3_df.to_html(escape=False,classes='data')]
                 table.append(tables)
                 
-            match0,match1,match2,match3,match4,match5,match6,match7,match8,match9,match10,match11,match12,match13,match14,match15,match16,match17,match18,match19= [e for e in table]
             
+            print(snapshot)
             #Player top mastery champs----------------
             top_champ_mastery = watcher.champion_mastery.by_summoner('NA1', summonerdict['id'])
 
@@ -267,12 +282,14 @@ def Main():
             #champid needs to be converted to name
             champid_counter = 0
             champid_to_name = []
+            '''
             with urllib.request.urlopen("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json") as url:
                 champjson = json.loads(url.read().decode())
             for i in champjson:
                 if champjson[i].key == champid[champid_counter]:
                     champid_to_name[champid_counter] = champjson[i].id
                     champid_counter += 1
+            '''
             champlevel = masterydf['championLevel'].to_list()
             champpoints = masterydf['championPoints'].to_list()
             
@@ -287,9 +304,13 @@ def Main():
             return render_template('summoner.html',test = top_champ_mastery,profile_img = profileicon_file_path, item0_img = Item0icon, 
             item1_img = Item1icon, item2_img = Item2icon, item3_img = Item3icon, item4_img = Item4icon, item5_img = Item5icon, 
             item6_img = Item6icon, champion_img = championicon, name = name, region = regions, champid = champid,
-            level = sumonnerLevel, tables0 = match0,tables1 = match1,tables2 =match2,tables3 =match3,tables4 =match4,tables5 =match5,tables6 =match6,
-            tables7 =match7,tables8 =match8,tables9 =match9,tables10 =match10,tables11 =match11,tables12 =match12,tables13 =match13,tables14 =match14,
-            tables15 =match15,tables16 =match16,tables17 =match17,tables18 =match18,tables19 =match19, titles =title, 
+            level = sumonnerLevel, snaptable0 = snapshot[0],snaptable1 = snapshot[1], snaptable2 = snapshot[2],snaptable3 = snapshot[3], snaptable4 = snapshot[4],
+            snaptable5 = snapshot[5], snaptable6 = snapshot[6], snaptable7 = snapshot[7],snaptable8 = snapshot[8], snaptable9 = snapshot[9],snaptable10 = snapshot[10],
+            snaptable11 = snapshot[11],snaptable12 = snapshot[12],snaptable13 = snapshot[13],snaptable14 = snapshot[14],snaptable15 = snapshot[15],snaptable16 = snapshot[16],
+            snaptable17 = snapshot[17],snaptable18 = snapshot[18],snaptable19 = snapshot[19],
+            tables0 = table[0],tables1 = table[1],tables2 =table[2],tables3 =table[3],tables4 =table[4],tables5 =table[5],tables6 =table[6],
+            tables7 =table[7],tables8 =table[8],tables9 =table[9],tables10 =table[10],tables11 =table[11],tables12 =table[12],tables13 =table[13],tables14 =table[14],
+            tables15 =table[15],tables16 =table[16],tables17 =table[17],tables18 =table[18],tables19 =table[19], titles =title, 
             champ_level = champlevel, champ_pts = champpoints, champ_name = champid_to_name) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except: 
