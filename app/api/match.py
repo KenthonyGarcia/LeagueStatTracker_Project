@@ -110,8 +110,33 @@ def Main():
             k=0
             for k in range(len(fulllist)):
                 participants = []
+                ss = []
                 if fulllist[k]['info']['gameMode'] == ("CLASSIC") or ("ARAM"):
                     for row in fulllist[j]['info']['participants']:
+                        if (row['summonerName'].upper() == (sumname).upper()):
+                            ss_row = {}
+                            ss_row['Summoner Name'] = row['summonerName']
+                            ss_row['Position'] = row['individualPosition']
+                            ss_row['Champion Name'] = row['championName']
+                            ss_row['Champion Level'] = row['champLevel']
+                            ss_row['Kills'] = row['kills']
+                            ss_row['Deaths'] = row['deaths']
+                            ss_row['Assists'] = row['assists']
+                            ss_row['Vision Score'] = row['visionScore']
+                            ss_row['Gold Earned'] = row['goldEarned']
+                            ss_row['Minions Killed'] = row['totalMinionsKilled']
+                            ss_row['item0'] = row['item0']
+                            ss_row['item1'] = row['item1']
+                            ss_row['item2'] = row['item2']
+                            ss_row['item3'] = row['item3']
+                            ss_row['item4'] = row['item4']
+                            ss_row['item5'] = row['item5']
+                            ss_row['item6'] = row['item6']
+                            ss_row['Win'] = row['win']
+                            #participants_row['gameDuration'] = fulllist['info']['gameDuration']
+                            ss.append(ss_row)
+                            var = ss
+                        ##############################################################################    
                         participants_row = {}
                         participants_row['Summoner Name'] = row['summonerName']
                         participants_row['Position'] = row['individualPosition']
@@ -133,6 +158,80 @@ def Main():
                         participants_row['Win'] = row['win']
                         #participants_row['gameDuration'] = fulllist['info']['gameDuration']
                         participants.append(participants_row)
+
+                    ssdf = pd.DataFrame(ss)
+                    sscdf = []
+                    for i in ssdf['Champion Name']:
+                        sschampion = str(i) + '.png'
+                        sschampion_file_path = 'https://league-img.s3.amazonaws.com/img/champion/' + sschampion
+                        sscdf.append(path_to_image_html(sschampion_file_path))
+                    ssdf['Champion Name'] = sscdf
+                    ssi0 = []
+                    for i in ssdf['item0']:
+                        ssItem0 = str(i) +'.png'
+                        ssItem0_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + ssItem0
+                        ssi0.append(path_to_image_html(ssItem0_file_path))
+                    ssdf['item0'] = ssi0
+                    ssi1 = []
+                    for i in ssdf['item1']:
+                        ssItem1 = str(i) +'.png'
+                        ssItem1_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + ssItem1
+                        ssi1.append(path_to_image_html(ssItem1_file_path))
+                    ssdf['item1'] = ssi1
+                    ssi2 = []
+                    for i in ssdf['item2']:
+                        ssItem2 = str(i) +'.png'
+                        ssItem2_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + ssItem2
+                        ssi2.append(path_to_image_html(ssItem2_file_path))
+                    ssdf['item2'] = ssi2
+                    ssi3 = []
+                    for i in ssdf['item3']:
+                        ssItem3 = str(i) +'.png'
+                        ssItem3_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + ssItem3
+                        ssi3.append(path_to_image_html(ssItem3_file_path))
+                    ssdf['item3'] = ssi3
+                    ssi4 = []
+                    for i in ssdf['item4']:
+                        ssItem4 = str(i) +'.png'
+                        ssItem4_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + ssItem4
+                        ssi4.append(path_to_image_html(ssItem4_file_path))
+                    ssdf['item4'] = ssi4
+                    ssi5 = []
+                    for i in ssdf['item5']:
+                        ssItem5 = str(i) +'.png'
+                        ssItem5_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + ssItem5
+                        ssi5.append(path_to_image_html(ssItem5_file_path))
+                    ssdf['item5'] = ssi5
+                    ssi6 = []
+                    for i in ssdf['item6']:
+                        ssItem6 = str(i) +'.png'
+                        ssItem6_file_path = 'https://league-img.s3.amazonaws.com/img/item/' + ssItem6
+                        ssi6.append(path_to_image_html(ssItem6_file_path))
+                    ssdf['item6'] = ssi6
+                    
+                    
+
+
+                    ssoutput_csv = nameid+"_Match"+str(j)+".csv"
+                    sscomplete_buf = StringIO()
+                    ssdf.to_csv(sscomplete_buf, index=False)
+                    sscomplete_buf.seek(0)
+                    #s3.meta.client.upload_file('match_history'+output_csv, 'league-img', output_csv)
+                    s3.put_object(Bucket="league-img", Body=sscomplete_buf.getvalue(), Key="match_history/"+ssoutput_csv)
+
+                    sstable=[]
+                    for i in range(20):
+                        ssdf_obj = s3.get_object(Bucket="league-img", Key="match_history/"+nameid+"_Match"+str(i)+".csv")
+                        ssdf_body = ssdf_obj['Body']
+                        sscsv_string = ssdf_body.read().decode('utf-8')
+                        sss3_df = pd.read_csv(StringIO(sscsv_string))
+                        sstitle=sss3_df.columns.values   
+                        sstables=[sss3_df.to_html(escape=False,classes='data')]
+                        sstable.append(sstables)
+                    
+                    ssmatch0,ssmatch1,ssmatch2,ssmatch3,ssmatch4,ssmatch5,ssmatch6,ssmatch7,ssmatch8,ssmatch9,ssmatch10,ssmatch11,ssmatch12,ssmatch13,ssmatch14,ssmatch15,ssmatch16,ssmatch17,ssmatch18,ssmatch19= [e for e in sstable]
+#############################################################################
+
                     challenges = []
                     for row in fulllist[j]['info']['participants']:
                         challenges_row = {}
@@ -265,14 +364,14 @@ def Main():
             masterydf = pd.DataFrame(champs)
             champid = masterydf['championId'].to_list()
             #champid needs to be converted to name
-            champid_counter = 0
-            champid_to_name = []
-            with urllib.request.urlopen("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json") as url:
-                champjson = json.loads(url.read().decode())
-            for i in champjson:
-                if champjson[i].key == champid[champid_counter]:
-                    champid_to_name[champid_counter] = champjson[i].id
-                    champid_counter += 1
+            #champid_counter = 0
+            #champid_to_name = []
+            #with urllib.request.urlopen("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json") as url:
+                #champjson = json.loads(url.read().decode())
+            #for i in champjson:
+                #if champjson[i].key == champid[champid_counter]:
+                    #champid_to_name[champid_counter] = champjson[i].id
+                    #champid_counter += 1
             champlevel = masterydf['championLevel'].to_list()
             champpoints = masterydf['championPoints'].to_list()
             
@@ -289,8 +388,8 @@ def Main():
             item6_img = Item6icon, champion_img = championicon, name = name, region = regions, champid = champid,
             level = sumonnerLevel, tables0 = match0,tables1 = match1,tables2 =match2,tables3 =match3,tables4 =match4,tables5 =match5,tables6 =match6,
             tables7 =match7,tables8 =match8,tables9 =match9,tables10 =match10,tables11 =match11,tables12 =match12,tables13 =match13,tables14 =match14,
-            tables15 =match15,tables16 =match16,tables17 =match17,tables18 =match18,tables19 =match19, titles =title, 
-            champ_level = champlevel, champ_pts = champpoints, champ_name = champid_to_name) #pass profile_img as variable for
+            tables15 =match15,tables16 =match16,tables17 =match17,tables18 =match18,tables19 =match19, titles =title, sstitles = sstitle, 
+            champ_level = champlevel, champ_pts = champpoints, var = var, sstables0 = ssmatch0) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except: 
             return redirect(url_for('error'))

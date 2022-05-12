@@ -17,15 +17,15 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/summoner.css') }}">
         <div>
             <img class = iconStyle src="{{profile_img}}">
-            <h1 class = nameStyle >{{name}}</h1>
+            <h1 class = nameStyle >{{var}}</h1>
             <h1 class = levelStyle>{{level}}</h1>
         </div>
     </div>
     <div class="dropdown">
         <button onclick="myFunction()" class="dropbtn">Match 1 Stats</button>
         <div id="myDropdown" class="dropdown-content">
-          <a href="Match 1">{% for table in tables0 %}
-                        {{titles[loop.index]}}
+          <a href="Match 1">{% for table in sstables0 %}
+                        {{sstitles[loop.index]}}
                         {{ table|safe }}</a>
                         {% endfor %}        
         </div> 
