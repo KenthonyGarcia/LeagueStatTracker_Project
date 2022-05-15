@@ -26,6 +26,7 @@ import pyotp
 import sys
 import urllib.request, json
 from flask_cors import CORS
+from leaguenames import leaguenames #pip install leaguenames
 
 
 
@@ -280,16 +281,9 @@ def Main():
             masterydf = pd.DataFrame(champs)
             champid = masterydf['championId'].to_list()
             #champid needs to be converted to name
-            champid_counter = 0
-            champid_to_name = []
-            '''
-            with urllib.request.urlopen("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json") as url:
-                champjson = json.loads(url.read().decode())
-            for i in champjson:
-                if champjson[i].key == champid[champid_counter]:
-                    champid_to_name[champid_counter] = champjson[i].id
-                    champid_counter += 1
-            '''
+            for x in range(len(champid)):
+                convert = leaguenames(champid[x])
+                champid[x] = convert
             champlevel = masterydf['championLevel'].to_list()
             champpoints = masterydf['championPoints'].to_list()
             
@@ -311,7 +305,7 @@ def Main():
             tables0 = table[0],tables1 = table[1],tables2 =table[2],tables3 =table[3],tables4 =table[4],tables5 =table[5],tables6 =table[6],
             tables7 =table[7],tables8 =table[8],tables9 =table[9],tables10 =table[10],tables11 =table[11],tables12 =table[12],tables13 =table[13],tables14 =table[14],
             tables15 =table[15],tables16 =table[16],tables17 =table[17],tables18 =table[18],tables19 =table[19], titles =title, 
-            champ_level = champlevel, champ_pts = champpoints, champ_name = champid_to_name) #pass profile_img as variable for
+            champ_level = champlevel, champ_pts = champpoints, champ_name = champid) #pass profile_img as variable for
             #note: change index.html(search page) to summoner.html(result page)
         except: 
             return redirect(url_for('error'))
