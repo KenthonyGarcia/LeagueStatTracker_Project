@@ -266,7 +266,7 @@ def Main():
                 table.append(tables)
                 
             
-            print(snapshot)
+            
             #Player top mastery champs----------------
             top_champ_mastery = watcher.champion_mastery.by_summoner('NA1', summonerdict['id'])
 
