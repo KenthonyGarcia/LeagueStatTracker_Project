@@ -18,13 +18,11 @@ import numpy as np
 import boto3
 import pyotp
 import qrcode
-import re
 import json
 import pandas as pd
 import os
 import pyotp
 import sys
-import urllib.request, json
 from flask_cors import CORS
 from leaguenames import leaguenames #pip install leaguenames
 
