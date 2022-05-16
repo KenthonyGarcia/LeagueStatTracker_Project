@@ -4,7 +4,6 @@ flask
 pandas
 ipython
 riotwatcher
-re
 boto3
 pyotp
 qrcode
