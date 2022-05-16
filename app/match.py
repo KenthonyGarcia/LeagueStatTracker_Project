@@ -109,7 +109,7 @@ def Main():
             
             j = 0
             k=0
-            for k in range(len(fulllist)):
+            for k in range(len(fulllist)):#loops through all 20 matches and creates 20 csv files numbered from 0-19 which are sent to the s3 server
                 participants = []
                 if fulllist[k]['info']['gameMode'] == ("CLASSIC") or ("ARAM"):
                     for row in fulllist[j]['info']['participants']:
