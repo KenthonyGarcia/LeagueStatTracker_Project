@@ -1,0 +1,113 @@
+.bg{
+    background-image: url(/static/notfound.jpg);
+    background-size: cover;
+}
+
+.mumuLogo{
+    width: 450px; 
+    padding: 20px;  
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 50%;
+}
+
+.errorText{
+    color: red;
+    font-size:60;
+    text-align: center;
+}
+
+.searchName{
+    padding: 10px 50px;
+    font-size: 17px;
+    border: 1px solid rgb(114, 114, 114);
+    width: 50%;
+    background: #2292dd9c;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+}
+
+.homeButton {
+    background-color: #AB8D34;
+    border-color: black;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 15%;
+    
+}
+
+.container{
+    margin: 0;
+    font-family: sans-serif;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
+}
+
+
+.bottomText{
+    color: rgb(255, 255, 255);
+    text-align: center;
+    right: 50px;
+}
+
+.box{
+	width: 500px;
+	height: 50px;
+	background-color: rgba(18, 146, 231, 0.726);
+	border-radius: 30px;
+	display: flex;
+	align-items: center;
+	padding: 20px;
+    position: absolute;
+    left: 930px;
+}
+
+.box > i {
+	font-size: 20px;
+    cursor: pointer;
+	color: rgb(255, 255, 255);
+}
+
+.box > input{
+	flex: 1;
+	height: 40px;
+	border: none;
+    background-color: rgba(18, 146, 231, 0);
+	outline: none;
+	font-size: 18px;
+	padding-left: 10px;
+}
+
+.box > select{
+    background-color: rgba(18, 146, 231, 0);
+    outline: none;
+    font-size: 18px;
+	height: 40px;
+	border: none;
+}
+.box > button{
+    background-color: rgba(255, 255, 255, 0);
+    outline: none;
+    cursor: pointer;
+    font-size: 18px;
+	height: 40px;
+	border: none;
+}
+input::placeholder{
+    color: rgb(7, 7, 7);
+  }
+
+.button:hover {
+    color: #fff
+}
+#footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }

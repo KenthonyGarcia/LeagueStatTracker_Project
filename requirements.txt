@@ -1,0 +1,12 @@
+flask_sqlalchemy
+flask_mysqldb
+flask
+pandas
+ipython
+riotwatcher
+boto3
+pyotp
+qrcode
+Pillow
+flask_cors
+leaguenames
