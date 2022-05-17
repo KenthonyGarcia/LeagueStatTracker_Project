@@ -11,6 +11,7 @@ from boto3.dynamodb.conditions import Key, Attr
 from flask_mysqldb import MySQL
 from io import StringIO
 from PIL import Image
+from config import api_key, aws_access_key_id, aws_secret_access_key
 import MySQLdb.cursors
 import numpy as np
 import boto3
@@ -36,11 +37,11 @@ CORS(app)
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
 
 
-watcher = LolWatcher(os.environ['api_key'])
+watcher = LolWatcher(api_key)
 
 mysql = MySQL(app)
-dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id = os.environ['aws_access_key_id'] , aws_secret_access_key = os.environ['aws_secret_access_key'])
-s3 = boto3.client('s3', region_name = 'us-east-1', aws_access_key_id = os.environ['aws_access_key_id'] , aws_secret_access_key = os.environ['aws_secret_access_key'])
+dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id = aws_access_key_id , aws_secret_access_key = aws_secret_access_key)
+s3 = boto3.client('s3', region_name = 'us-east-1', aws_access_key_id = aws_access_key_id , aws_secret_access_key = aws_secret_access_key)
 
 
 def path_to_image_html(path):
