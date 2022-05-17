@@ -23,12 +23,10 @@ import os
 import pyotp
 import sys
 from flask_cors import CORS
-from leaguenames import leaguenames #pip install leaguenames
+from leaguenames import leaguenames 
 
 
 
-#PROFILEICON_FOLDER = os.path.join('static', 'img', 'profileicon')
-#ITEM_FOLDER = os.path.join('static', 'img', 'item')
 
 app = Flask(__name__)
 CORS(app)
@@ -37,8 +35,7 @@ CORS(app)
 
 
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
-#Remember to remove the API key before pushing.
-#Remember to remove the API key before pushing code to github repository.
+
 
 watcher = LolWatcher(api_key)
 
@@ -46,12 +43,7 @@ mysql = MySQL(app)
 dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id = aws_access_key_id , aws_secret_access_key = aws_secret_access_key)
 s3 = boto3.client('s3', region_name = 'us-east-1', aws_access_key_id = aws_access_key_id , aws_secret_access_key = aws_secret_access_key)
 
-#----dropdown for regions
-#@app.route('/', methods = ['GET'])
-#def dropdown():
-#    regions = ['NA1', 'EUW1', 'EUN1', 'BR1', 'LA1', 'LA2', 'OCE', 'RU1', 'TR1', 'JP1', 'KR'] #region codes
-#    return render_template('index.html', regions = regions) #regions is the dropdown menu variable name
-#----
+
 def path_to_image_html(path):
     html_function = '<img src="'+ path + '" width="60">'
     return html_function
@@ -134,7 +126,7 @@ def Main():
                     
                     
                     
-                    challenges = []#creates a challeges dataframe that will take sub dictionary from the participants dictionary
+                    challenges = []#creates a challeges dataframe that will take sub dictionary challenges from the participants dictionary
                     for row in fulllist[j]['info']['participants']:
                         challenges_row = {}
                         challenges_row['challenges'] = row['challenges']
@@ -152,7 +144,7 @@ def Main():
                     challengeslistdf['killParticipation'] = [round(x,2) for x in challengeslistdf['killParticipation']]
                     df = pd.DataFrame(participants)
                     df_complete = pd.concat([df, challengeslistdf], axis = 1)
-                    
+                    #Renaming positions in the dataframe to the positions they should be called
                     df_complete['Position'] = ['Normal' if element == ('Invalid') else element for element in df_complete['Position']]
                     df_complete['Position'] = ['Top' if element == ('TOP') else element for element in df_complete['Position']]
                     df_complete['Position'] = ['Mid' if element == ('MIDDLE') else element for element in df_complete['Position']]
@@ -160,6 +152,7 @@ def Main():
                     df_complete['Position'] = ['Jungle' if element == ('JUNGLE') else element for element in df_complete['Position']]
                     df_complete['Position'] = ['Support' if element == ('UTILITY') else element for element in df_complete['Position']]
                     
+                    #Champion and item loops to add image files into dataframe
                     championdf= []
                     for i in df_complete['Champion Name']:
                         champion = str(i) +'.png'
@@ -246,24 +239,21 @@ def Main():
             seconds = gametime%60
             match_time = str(mintues)+"m"+str(seconds)+'s'
             """
-            """
             
-            """
-            
-            #Reading the file from s3------------------------------------
+            #Reading the files from s3------------------------------------
             table=[]
             snapshot=[]
-            for i in range(20):
+            for i in range(20):#loops 20 times for all 20 files that are stored on the s3 server
                 df_obj = s3.get_object(Bucket="league-img", Key="match_history/"+nameid+"_Match"+str(i)+".csv")
                 df_body = df_obj['Body']
                 csv_string = df_body.read().decode('utf-8')
                 s3_df = pd.read_csv(StringIO(csv_string))
-                ss = (s3_df.loc[s3_df['Summoner Name'] == nameid])
+                ss = (s3_df.loc[s3_df['Summoner Name'] == nameid])#looks for the row where the players name is equal to the summoner name that is being searched.
                 snapshots = [ss.to_html(escape=False,classes='data')]
                 title=s3_df.columns.values
                 tables=[s3_df.to_html(escape=False,classes='data')]
                 table.append(tables)
-                snapshot.append(snapshots)
+                snapshot.append(snapshots)#appends the one row dataframe to a list that contains matches 0-19
                 
             
             
@@ -328,18 +318,18 @@ def error():
 @app.route('/login', methods =['GET', 'POST'])
 def login():
     msg = ''
-    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:#requests email,password,and a one time password
         email = request.form['email']
         password = request.form['password']
         code = request.form['otp_code']
         table = dynamodb.Table('users')
         response = table.query(KeyConditionExpression=Key('email').eq(email))
         items = response['Items']
-        sec_key = items[0]['sec_key']
+        sec_key = items[0]['sec_key']#takes the security key that is used to generate the one time password code
         otp_gen = pyotp.TOTP(sec_key)
         summonername = items[0]['SummonerName']
         username = items[0]['username']
-        if password == items[0]['password']:
+        if password == items[0]['password']:#if the password inputed and the password stored are the same then it will check if the code given is the same as the generated code
             if otp_gen.now() == code:
                 msg = 'Logged in successfully!'
                 return redirect(url_for('profile', msg = msg, username = username, summonername = summonername))
@@ -377,7 +367,7 @@ def register():
         password = request.form['password']
         table = dynamodb.Table('users')
         #Google Authenticator QrCode generator
-        sec_key = pyotp.random_base32() 
+        sec_key = pyotp.random_base32() #Security key is stored into the DynamoDB database for when a code needs to be generated for the login stage
         table.put_item(
             Item={
                 'username': username,
@@ -402,7 +392,7 @@ def authentication():
     table = dynamodb.Table('users')
     response = table.query(KeyConditionExpression=Key('email').eq(str(email0)))
     items = response['Items']
-    sec_key = items[0]['sec_key']
+    sec_key = items[0]['sec_key']#pulls the security key from DynamoDB 
     otp_gen = pyotp.TOTP(sec_key)
     auth_str = otp_gen.provisioning_uri(name=email, issuer_name=('RiftTracker'))
     qrimg0 = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=' + auth_str
