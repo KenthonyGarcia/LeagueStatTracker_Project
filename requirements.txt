@@ -1,5 +1,5 @@
 flask_sqlalchemy
-Flask gunicorn
+gunicorn
 flask_mysqldb
 flask
 pandas
