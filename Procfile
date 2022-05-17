@@ -1,2 +1,1 @@
-web: waitress-serve --listen=*:8080 app:app 
-worker: python app.py
+web: waitress-serve --port $PORT --host 0.0.0.0  app:app  
