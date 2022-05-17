@@ -4,12 +4,8 @@ flask
 pandas
 ipython
 riotwatcher
-re
 boto3
 pyotp
 qrcode
 Pillow
 flask_cors
-flask python-dotenv
-io
-urllib.request

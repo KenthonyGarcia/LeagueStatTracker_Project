@@ -1,0 +1,8 @@
+spec:
+  name: LeagueStatTracker_Project
+  services:
+  - environment_slug: python
+    git:
+      branch: main
+      repo_clone_url: gh repo clone KenthonyGarcia/LeagueStatTracker_Project
+    name: LeagueStatTracker_Project
