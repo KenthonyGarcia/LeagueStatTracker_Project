@@ -36,11 +36,11 @@ CORS(app)
 # global variables/ ALSO REMOVE API KEY BEFORE PUSHING
 
 
-watcher = LolWatcher(api_key)
+watcher = LolWatcher(os.environ['api_key'])
 
 mysql = MySQL(app)
-dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id = aws_access_key_id , aws_secret_access_key = aws_secret_access_key)
-s3 = boto3.client('s3', region_name = 'us-east-1', aws_access_key_id = aws_access_key_id , aws_secret_access_key = aws_secret_access_key)
+dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1', aws_access_key_id = os.environ['aws_access_key_id'] , aws_secret_access_key = os.environ['aws_secret_access_key'])
+s3 = boto3.client('s3', region_name = 'us-east-1', aws_access_key_id = os.environ['aws_access_key_id'] , aws_secret_access_key = os.environ['aws_secret_access_key'])
 
 
 def path_to_image_html(path):
