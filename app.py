@@ -411,4 +411,4 @@ def authentication():
     return render_template('authentication.html', msg = msg, qrimg = qrimg0)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=True)

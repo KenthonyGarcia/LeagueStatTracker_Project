@@ -1,5 +1,5 @@
 flask_sqlalchemy
-gunicorn
+waitress
 flask_mysqldb
 flask
 pandas
