@@ -134,7 +134,7 @@ def Main():
                     
                     
                     
-                    challenges = []
+                    challenges = []#creates a challeges dataframe that will take sub dictionary from the participants dictionary
                     for row in fulllist[j]['info']['participants']:
                         challenges_row = {}
                         challenges_row['challenges'] = row['challenges']
