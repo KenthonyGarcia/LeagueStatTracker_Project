@@ -22,9 +22,12 @@
         </div>
     </div>
     <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Match 1 Stats</button>
+        <button onclick="myFunction()" class="dropbtn">{% for table in snaptable0 %}
+          {{titles[loop.index]}}
+          {{ table|safe }}</a>
+          {% endfor %} </button>
         <div id="myDropdown" class="dropdown-content">
-          <a href="Match 1">{% for table in tables0 %}
+          <a href="Match 1">{% for table in tables1 %}
                         {{titles[loop.index]}}
                         {{ table|safe }}</a>
                         {% endfor %}        
@@ -33,7 +36,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction1()" class="dropbtn">Match 2 Stats</button>
+      <button onclick="myFunction1()" class="dropbtn">{% for table in snaptable1 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown1" class="dropdown-content">
         <a href="Match 2">{% for table in tables1 %}
                       {{titles[loop.index]}}
@@ -44,7 +50,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction2()" class="dropbtn">Match 3 Stats</button>
+      <button onclick="myFunction2()" class="dropbtn">{% for table in snaptable2 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown2" class="dropdown-content">
         <a href="Match 3">{% for table in tables2 %}
                       {{titles[loop.index]}}
@@ -55,7 +64,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction3()" class="dropbtn">Match 4 Stats</button>
+      <button onclick="myFunction3()" class="dropbtn">{% for table in snaptable3 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown3" class="dropdown-content">
         <a href="Match 4">{% for table in tables3 %}
                       {{titles[loop.index]}}
@@ -66,7 +78,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction4()" class="dropbtn">Match 5 Stats</button>
+      <button onclick="myFunction4()" class="dropbtn">{% for table in snaptable4 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown4" class="dropdown-content">
         <a href="Match 5">{% for table in tables4 %}
                       {{titles[loop.index]}}
@@ -77,7 +92,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction5()" class="dropbtn">Match 6 Stats</button>
+      <button onclick="myFunction5()" class="dropbtn">{% for table in snaptable5 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown5" class="dropdown-content">
         <a href="Match 6">{% for table in tables5 %}
                       {{titles[loop.index]}}
@@ -88,7 +106,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction6()" class="dropbtn">Match 7 Stats</button>
+      <button onclick="myFunction6()" class="dropbtn">{% for table in snaptable6 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown6" class="dropdown-content">
         <a href="Match 7">{% for table in tables6 %}
                       {{titles[loop.index]}}
@@ -99,7 +120,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction7()" class="dropbtn">Match 8 Stats</button>
+      <button onclick="myFunction7()" class="dropbtn">{% for table in snaptable7 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown7" class="dropdown-content">
         <a href="Match 8">{% for table in tables7 %}
                       {{titles[loop.index]}}
@@ -110,7 +134,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction8()" class="dropbtn">Match 9 Stats</button>
+      <button onclick="myFunction8()" class="dropbtn">{% for table in snaptable8 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown8" class="dropdown-content">
         <a href="Match 9">{% for table in tables8 %}
                       {{titles[loop.index]}}
@@ -121,7 +148,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction9()" class="dropbtn">Match 10 Stats</button>
+      <button onclick="myFunction9()" class="dropbtn">{% for table in snaptable9 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown9" class="dropdown-content">
         <a href="Match 10">{% for table in tables9 %}
                       {{titles[loop.index]}}
@@ -132,7 +162,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction10()" class="dropbtn">Match 11 Stats</button>
+      <button onclick="myFunction10()" class="dropbtn">{% for table in snaptable10 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown10" class="dropdown-content">
         <a href="Match 11">{% for table in tables10 %}
                       {{titles[loop.index]}}
@@ -143,7 +176,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction11()" class="dropbtn">Match 12 Stats</button>
+      <button onclick="myFunction11()" class="dropbtn">{% for table in snaptable11 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown11" class="dropdown-content">
         <a href="Match 12">{% for table in tables11 %}
                       {{titles[loop.index]}}
@@ -154,7 +190,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction12()" class="dropbtn">Match 13 Stats</button>
+      <button onclick="myFunction12()" class="dropbtn">{% for table in snaptable12 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown12" class="dropdown-content">
         <a href="Match 13">{% for table in tables12 %}
                       {{titles[loop.index]}}
@@ -165,7 +204,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction13()" class="dropbtn">Match 14 Stats</button>
+      <button onclick="myFunction13()" class="dropbtn">{% for table in snaptable13 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown13" class="dropdown-content">
         <a href="Match 14">{% for table in tables13 %}
                       {{titles[loop.index]}}
@@ -176,7 +218,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction14()" class="dropbtn">Match 15 Stats</button>
+      <button onclick="myFunction14()" class="dropbtn">{% for table in snaptable14 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown14" class="dropdown-content">
         <a href="Match 15">{% for table in tables14 %}
                       {{titles[loop.index]}}
@@ -187,7 +232,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction15()" class="dropbtn">Match 16 Stats</button>
+      <button onclick="myFunction15()" class="dropbtn">{% for table in snaptable15 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown15" class="dropdown-content">
         <a href="Match 16">{% for table in tables15 %}
                       {{titles[loop.index]}}
@@ -198,7 +246,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction16()" class="dropbtn">Match 17 Stats</button>
+      <button onclick="myFunction16()" class="dropbtn">{% for table in snaptable16 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown16" class="dropdown-content">
         <a href="Match 17">{% for table in tables16 %}
                       {{titles[loop.index]}}
@@ -209,7 +260,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction17()" class="dropbtn">Match 18 Stats</button>
+      <button onclick="myFunction17()" class="dropbtn">{% for table in snaptable17 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown17" class="dropdown-content">
         <a href="Match 18">{% for table in tables17 %}
                       {{titles[loop.index]}}
@@ -220,7 +274,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction18()" class="dropbtn">Match 19 Stats</button>
+      <button onclick="myFunction18()" class="dropbtn">{% for table in snaptable18 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown18" class="dropdown-content">
         <a href="Match 19">{% for table in tables18 %}
                       {{titles[loop.index]}}
@@ -231,7 +288,10 @@
     <br>
     <br>
     <div class="dropdown">
-      <button onclick="myFunction19()" class="dropbtn">Match 20 Stats</button>
+      <button onclick="myFunction19()" class="dropbtn">{% for table in snaptable19 %}
+        {{titles[loop.index]}}
+        {{ table|safe }}</a>
+        {% endfor %}</button>
       <div id="myDropdown19" class="dropdown-content">
         <a href="Match 20">{% for table in tables19 %}
                       {{titles[loop.index]}}

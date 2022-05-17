@@ -1,6 +1,5 @@
 """
 Created on Mon Feb 21 10:57:41 2022
-
 @author: kenth
 """
 from riotwatcher import LolWatcher, ApiError
@@ -259,10 +258,12 @@ def Main():
                 df_body = df_obj['Body']
                 csv_string = df_body.read().decode('utf-8')
                 s3_df = pd.read_csv(StringIO(csv_string))
-                snapshot.append(s3_df.loc[s3_df['Summoner Name'] == nameid])
-                title=s3_df.columns.values   
+                ss = (s3_df.loc[s3_df['Summoner Name'] == nameid])
+                snapshots = [ss.to_html(escape=False,classes='data')]
+                title=s3_df.columns.values
                 tables=[s3_df.to_html(escape=False,classes='data')]
                 table.append(tables)
+                snapshot.append(snapshots)
                 
             
             
