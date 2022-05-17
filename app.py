@@ -11,7 +11,6 @@ from boto3.dynamodb.conditions import Key, Attr
 from flask_mysqldb import MySQL
 from io import StringIO
 from PIL import Image
-from config import api_key, aws_access_key_id, aws_secret_access_key
 import MySQLdb.cursors
 import numpy as np
 import boto3
